@@ -1,0 +1,28 @@
+# misc
+.old/
+.DS_Store
+
+# code
+.tags
+
+# tex
+*-blx.aux
+*-blx.bib
+*-converted-to.pdf
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.brf
+*.dvi
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.run.xml
+*.spl
+*.synctex
+*.synctex.gz
+*.synctex.gz
+*.toc
