@@ -36,6 +36,8 @@ params = c(shape=1,scale=1)
 opt = optim_nm(jfun,2,params,edge=.01,exit=1e4,tol=1e-9)
 params[1:2] = opt$par
 print(params)
+save.value('G-gamma-shape',params['shape'])
+save.value('G-gamma-scale',params['scale'])
 G = G.fun(params)
 # plot the distributions
 df = data.frame(t=t, S=S, H=H, G=G, Z=S.fun(G))
