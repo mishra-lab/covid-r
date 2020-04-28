@@ -27,3 +27,7 @@ covid.19.distr = function(param,which='master'){
   )[[spec$distr]]
   return(do.call(distr,spec$params))
 }
+# helper functions
+ggcolor = function(n){
+  return(hcl(h=seq(15,375,length=n+1),l=65,c=100)[1:n])
+}

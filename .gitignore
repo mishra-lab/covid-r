@@ -1,8 +1,12 @@
+# data
+data/private/
+
 # misc
 .old/
 .DS_Store
 
 # code
+.debug/
 .tags
 Rplots.pdf
 
