@@ -3,4 +3,4 @@ Estimating the effective reproduction number Re(t) for COVID19 in GTA, Canada
 
 ## Methods
 - Recovering the generation time distribution from serial interval & incubation period
-
+- Estimate Re(t) in GTA based on: reported cases, deaths
