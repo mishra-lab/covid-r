@@ -33,11 +33,35 @@ make.incid = function(config,data){
     dates    = dates
   ))
 }
-estimate.R = function(config,data){
-  incid = make.incid(config,data)
-  return(suppressWarnings({estimate_R(
-    incid  = incid,
-    method = 'parametric_si',
-    config = make_config(make.re.config(config))
-  )}))
+estimate.R = function(config,data,rep=1){
+  R.objs = list()
+  for (i in 1:rep){
+    incid = make.incid(config,data)
+    R.objs[[i]] = suppressWarnings({estimate_R(
+      incid  = incid,
+      method = 'parametric_si',
+      config = make_config(make.re.config(config))
+    )})
+  }
+  return(merge.R(R.objs))
+}
+merge.R = function(R.objs){
+  # recover gamma params and combine using Welch-Satterthwaite
+  N.R    = length(R.objs)
+  shapes = sapply(R.objs, function(R){ R$R[['Mean(R)']]^2 / R$R[['Std(R)']]^2 })
+  scales = sapply(R.objs, function(R){ R$R[['Std(R)']]^2 / R$R[['Mean(R)']] })
+  shape  = rowSums(shapes * scales)^2 / rowSums(shapes * scales^2) / N.R
+  scale  = rowSums(shapes * scales) / shape / N.R
+  # hijack the first object
+  R = R.objs[[1]]
+  R$R[['Mean(R)']]           = scale * shape
+  R$R[['Std(R)']]            = scale * shape^2
+  R$R[['Quantile.0.025(R)']] = qgamma(.025, shape=shape, scale=scale)
+  R$R[['Quantile.0.05(R)']]  = qgamma(.050, shape=shape, scale=scale)
+  R$R[['Quantile.0.25(R)']]  = qgamma(.250, shape=shape, scale=scale)
+  R$R[['Median(R)']]         = qgamma(.500, shape=shape, scale=scale)
+  R$R[['Quantile.0.75(R)']]  = qgamma(.750, shape=shape, scale=scale)
+  R$R[['Quantile.0.95(R)']]  = qgamma(.950, shape=shape, scale=scale)
+  R$R[['Quantile.0.975(R)']] = qgamma(.975, shape=shape, scale=scale)
+  return(R)
 }
