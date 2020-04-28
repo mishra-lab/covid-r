@@ -1,0 +1,11 @@
+{
+  "master": {
+    "distr": "gamma",
+    "params": {
+      "shape": 5.807,
+      "scale": 0.948
+    },
+    "doi": "10.7326/m20-0504",
+    "ref": "Lauer2020"
+  }
+}

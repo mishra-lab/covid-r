@@ -1,0 +1,11 @@
+{
+  "master": {
+    "distr": "gamma",
+    "params": {
+      "shape": 1.436,
+      "scale": 3.295
+    },
+    "doi": null,
+    "ref": "Knight2020"
+  }
+}

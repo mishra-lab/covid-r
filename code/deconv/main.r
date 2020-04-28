@@ -14,8 +14,8 @@ source('config.r')
 # define the time vector & distributions
 dt = 0.1
 t = seq(-60,60,dt)
-S = dnorm(t, mean=3.96, sd=4.75)        # S(t) doi: 10.3201/eid2606.200357
-H = dgamma(t, shape=5.807, scale=0.948) # H(t) doi: 10.7326/m20-0504
+S = d(covid.19.distr('ser-int'))(t)
+H = d(covid.19.distr('inc-per'))(t)
 # assume G(t) is gamma
 # n.b. this is not true deconvolution
 #      and we assume G(t) and H(t) are independent
