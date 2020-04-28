@@ -1,4 +1,18 @@
 library('EpiEstim')
+get.config = function(
+  data.file = file.path(path.data,'private','ON_LineListforMOH_UofT.xlsx'),
+  tau       = round(q(covid.19.distr('gen-time'))(0.9)),
+  t0        = as.date('2020-02-15'),
+  t1        = as.date('2020-04-26'),
+  travel    = 'exclude',
+  case.def  = 'death',
+  region    = 'GTA',
+  delay     = NULL
+){
+  config = as.list(environment())
+  config$delay = ifelse(is.null(delay), delay.map[[config$case.def]], delay)
+  return(config)
+}
 make.re.config = function(config){
   nt = length(make.dates(config))
   G = covid.19.distr('gen-time')

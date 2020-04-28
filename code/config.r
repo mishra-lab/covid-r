@@ -1,5 +1,7 @@
 suppressPackageStartupMessages(library('distrEx'))
 library('rjson')
+# misc
+options(width=200)
 # paths
 path.root  = strsplit(getwd(),file.path('code'))
 path.fig   = file.path(path.root,'out','fig')
