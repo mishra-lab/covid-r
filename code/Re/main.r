@@ -2,7 +2,7 @@
 # Jesse Knight 2020
 # University of Toronto
 source('config.r')
-library('reshape2')
+source('utils.r')
 invisible(sapply(c('data','re','plot','run'),function(fname){
   source(file.path('Re',paste0(fname,'.r')))
 }))
@@ -11,4 +11,5 @@ run.default.R()
 run.compare.travel()
 run.compare.case()
 run.compare.adj.death()
+run.compare.kern()
 print('done')

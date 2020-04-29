@@ -23,20 +23,3 @@ save.value = function(fname,value,rnd=3){
     sink(NULL)
   }
 }
-distr.json = function(name){
-  return(fromJSON(file=file.path(path.distr,paste0(name,'.json'))))
-}
-# common COVID19 distribution definitions using distr
-covid.19.distr = function(param,which='master'){
-  spec  = distr.json(param)[[which]]
-  distr = list(
-    norm  = Norm,
-    gamma = Gammad,
-    lognorm = Lnorm
-  )[[spec$distr]]
-  return(do.call(distr,spec$params))
-}
-# helper functions
-ggcolor = function(n){
-  return(hcl(h=seq(15,375,length=n+1),l=65,c=100)[1:n])
-}

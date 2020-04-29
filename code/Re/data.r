@@ -30,13 +30,6 @@ get.case.region = function(data.raw){
   }
   return(unlist(lapply(data.raw$Diagnosing_Health_Unit_Area_Desc,map.fun)))
 }
-as.date = function(dates){
-  return(as.Date(
-    dates,
-    format='%Y-%m-%d',
-    origin='1970-01-01'
-  ))
-}
 clean.data = function(config,data.raw){
   if (missing(data.raw)){ data.raw = load.data(config) }
   data = data.frame(

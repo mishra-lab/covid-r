@@ -9,12 +9,13 @@ get.config = function(
   case.def  = 'death',    # 'death', 'report'
   case.adj  = FALSE,      # FALSE, 'overall', 'age'
   case.unc  = FALSE,      # TRUE, FALSE
+  case.kern = 0,
   region    = 'GTA',
-  K         = NULL,
+  sample    = NULL,
   delay     = NULL
 ){
   config = as.list(environment())
-  config$K     = ifelse(is.null(K), ifelse(config$case.unc,20,1), K)
+  config$sample = ifelse(is.null(sample), ifelse(config$case.unc,20,1), sample)
   config$delay = ifelse(is.null(delay), delay.map[[config$case.def]], delay)
   return(config)
 }
@@ -37,7 +38,7 @@ make.dates = function(config){
 make.ifr.weights = function(config,data){
   cap = function(wt){ min(wt, config$adj.max) }
   # weight functions: point estimate or random sampling
-  cap = function(wt){ min(wt, 50) }
+  cap = function(wt){ min(wt, 200) }
   wt.fun = ifelse(config$case.unc,
     function(ref,cm){ cap( ref / runif(1, cm$low, cm$high) ) },
     function(ref,cm){ cap( ref / cm$mean) }
@@ -61,6 +62,13 @@ make.weights = function(config,data){
   }
   # TODO: adjustment for reported cases
 }
+smooth.incid = function(config,incid){
+  if (config$case.kern){
+    return(conv(incid, gauss.kernel(config$case.kern)))
+  } else {
+    return(incid)
+  }
+}
 make.incid = function(config,data){
   # define the dates
   dates = make.dates(config)
@@ -73,10 +81,10 @@ make.incid = function(config,data){
   # count function for both local and travel
   count.cases = function(local){
     select = ((local==select.local) & select.region & select.death)
-    return(as.vector(wtd.table(
+    return(smooth.incid(config,as.vector(wtd.table(
       x = factor(x=as.double(data$dates[select]), levels=as.double(dates)),
       weights = weights[select],
-    )))
+    ))))
   }
   return(data.frame(
     local    = count.cases(local=TRUE),
@@ -88,9 +96,9 @@ estimate.R = function(config,data,...){
   if (missing(config)){ config = get.config(...) }
   if (missing(data))  { data = clean.data(config) }
   R.objs = list()
-  for (i in 1:config$K){
+  for (s in 1:config$sample){
     incid = make.incid(config,data)
-    R.objs[[i]] = suppressWarnings({estimate_R(
+    R.objs[[s]] = suppressWarnings({estimate_R(
       incid  = incid,
       method = 'parametric_si',
       config = make_config(make.re.config(config))
