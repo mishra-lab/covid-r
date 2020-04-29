@@ -1,22 +1,30 @@
 library('EpiEstim')
+library('questionr')
 get.config = function(
   data.file = file.path(path.data,'private','ON_LineListforMOH_UofT.xlsx'),
   tau       = round(q(covid.19.distr('gen-time'))(0.9)),
   t0        = as.date('2020-02-15'),
-  t1        = as.date('2020-04-26'),
-  travel    = 'exclude',
-  case.def  = 'death',
+  t1        = as.date('2020-04-28'),
+  travel    = 'exclude',  # 'exclude', 'include'
+  case.def  = 'death',    # 'death', 'report'
+  case.adj  = FALSE,      # FALSE, 'overall', 'age'
+  case.unc  = FALSE,      # TRUE, FALSE
   region    = 'GTA',
+  K         = NULL,
   delay     = NULL
 ){
   config = as.list(environment())
+  config$K     = ifelse(is.null(K), ifelse(config$case.unc,20,1), K)
   config$delay = ifelse(is.null(delay), delay.map[[config$case.def]], delay)
   return(config)
 }
 make.re.config = function(config){
   nt = length(make.dates(config))
-  G = covid.19.distr('gen-time')
+  G  = covid.19.distr('gen-time')
+  R0 = covid.19.distr('R0')
   return(list(
+    mean_prior = E(R0),
+    std_prior  = sd(R0)*1.96,
     t_start = seq(2, nt-config$tau),
     t_end   = seq(2+config$tau, nt),
     mean_si = E(G),
@@ -26,9 +34,38 @@ make.re.config = function(config){
 make.dates = function(config){
   return(seq(config$t0, config$t1-config$delay, 1))
 }
+make.ifr.weights = function(config,data){
+  cap = function(wt){ min(wt, config$adj.max) }
+  # weight functions: point estimate or random sampling
+  cap = function(wt){ min(wt, 50) }
+  wt.fun = ifelse(config$case.unc,
+    function(ref,cm){ cap( ref / runif(1, cm$low, cm$high) ) },
+    function(ref,cm){ cap( ref / cm$mean) }
+  )
+  # weight maps based on infection fatality ratio
+  ifr = distr.json('ifr')
+  ref = ifr$overall$mean
+  wt.map = list(
+    overall = function(i){ wt.fun( ref, ifr$overall ) },
+    age = function(i){ wt.fun( ref, ifr$age$groups[[ min(9,floor(data$age[i]/10)+1) ]] ) }
+  )[[ config$case.adj ]]
+  # compute the weights
+  return(sapply(1:nrow(data), wt.map))
+}
+make.weights = function(config,data){
+  if (config$case.adj == FALSE){ # no adjustment
+    return(rep(1,nrow(data)))
+  }
+  if (config$case.def == 'death'){ # adjustment for deaths
+    return(make.ifr.weights(config,data))
+  }
+  # TODO: adjustment for reported cases
+}
 make.incid = function(config,data){
   # define the dates
   dates = make.dates(config)
+  # define the weights (may be random)
+  weights = make.weights(config,data)
   # define some filters
   select.region = data$region %in% region.map[[config$region]]
   select.death  = !(!data$death & config$case.def=='death')
@@ -36,9 +73,9 @@ make.incid = function(config,data){
   # count function for both local and travel
   count.cases = function(local){
     select = ((local==select.local) & select.region & select.death)
-    return(as.vector(table(
-      factor(x = as.double(data$dates[select]),
-             levels = as.double(dates))
+    return(as.vector(wtd.table(
+      x = factor(x=as.double(data$dates[select]), levels=as.double(dates)),
+      weights = weights[select],
     )))
   }
   return(data.frame(
@@ -47,9 +84,11 @@ make.incid = function(config,data){
     dates    = dates
   ))
 }
-estimate.R = function(config,data,rep=1){
+estimate.R = function(config,data,...){
+  if (missing(config)){ config = get.config(...) }
+  if (missing(data))  { data = clean.data(config) }
   R.objs = list()
-  for (i in 1:rep){
+  for (i in 1:config$K){
     incid = make.incid(config,data)
     R.objs[[i]] = suppressWarnings({estimate_R(
       incid  = incid,

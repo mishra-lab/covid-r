@@ -9,19 +9,26 @@ path.value = file.path(path.root,'out','value')
 path.data  = file.path(path.root,'data')
 path.distr = file.path(path.root,'data','public','distr')
 # saving stuff
+config.save = FALSE
 save.fig = function(fname,ext='.pdf',...) {
-  ggsave(file.path(path.fig,paste0(fname,ext)),...)
+  if (config.save) {
+    ggsave(file.path(path.fig,paste0(fname,ext)),...)
+  }
 }
 save.value = function(fname,value,rnd=3){
-  s = sprintf(paste0('%.',rnd,'f'),value)
-  sink(file.path(path.value,fname))
-  cat(s)
-  sink(NULL)
+  if (config.save) {
+    s = sprintf(paste0('%.',rnd,'f'),value)
+    sink(file.path(path.value,fname))
+    cat(s)
+    sink(NULL)
+  }
+}
+distr.json = function(name){
+  return(fromJSON(file=file.path(path.distr,paste0(name,'.json'))))
 }
 # common COVID19 distribution definitions using distr
 covid.19.distr = function(param,which='master'){
-  fname = file.path(path.distr,paste0(param,'.json'))
-  spec  = fromJSON(file=fname)[[which]]
+  spec  = distr.json(param)[[which]]
   distr = list(
     norm  = Norm,
     gamma = Gammad,
