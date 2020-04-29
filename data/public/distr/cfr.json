@@ -1,0 +1,63 @@
+{
+  "overall": {
+    "mean": 0.0138,
+    "low":  0.0123,
+    "high": 0.0153,
+    "N":    44672,
+    "doi": "10.1016/s1473-3099(20)30243-7",
+    "ref": "Verity2020",
+    "notes": "Table 1: case fatality ratio (adjusted for censoring, demography, and under-ascertainment)"
+  },
+  "age": {
+    "groups": [
+      { "mean": 0.0000260,
+        "low":  0.00000312,
+        "high": 0.000382,
+        "N":    416
+      },
+      { "mean": 0.000148,
+        "low":  0.0000288,
+        "high": 0.000759,
+        "N":    549
+      },
+      { "mean": 0.000600,
+        "low":  0.000317,
+        "high": 0.00132,
+        "N":    3619
+      },
+      { "mean": 0.00146,
+        "low":  0.00103,
+        "high": 0.00255,
+        "N":    7600
+      },
+      { "mean": 0.00295,
+        "low":  0.00221,
+        "high": 0.00422,
+        "N":    8571
+      },
+      { "mean": 0.0125,
+        "low":  0.0103,
+        "high": 0.0155,
+        "N":    10008
+      },
+      { "mean": 0.0399,
+        "low":  0.0341,
+        "high": 0.0455,
+        "N":    8583
+      },
+      { "mean": 0.0861,
+        "low":  0.0748,
+        "high": 0.0999,
+        "N":    3918
+      },
+      { "mean": 0.134,
+        "low":  0.112,
+        "high": 0.159,
+        "N":    1408
+      }
+    ],
+    "doi": "10.1016/s1473-3099(20)30243-7",
+    "ref": "Verity2020",
+    "notes": "Table 1: case fatality ratio (adjusted for censoring, demography, and under-ascertainment)"
+  }
+}

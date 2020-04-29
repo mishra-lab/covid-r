@@ -6,6 +6,7 @@
       "sdlog": 0.4399
     },
     "doi": "10.3390/jcm9020538",
-    "ref": "Linton2020"
+    "ref": "Linton2020",
+    "notes": "Table 1: onset to death (lognormal), with parameter transformation"
   }
 }
