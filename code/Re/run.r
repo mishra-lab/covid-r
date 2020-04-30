@@ -1,39 +1,33 @@
-run.default.R = function(...){
-  g = plot.R(estimate.R(...))
-  save.fig('Re-default',width=6,height=4)
-  return(g)
+plot.map = list(
+  R = plot.R,
+  cases = plot.cases
+)
+run.default.R = function(what='R',...){
+  return(plot.map[[what]](estimate.R(...)))
 }
-run.compare.travel = function(...){
-  g = plot.R(vs='Travel',list(
-    'Exclude' = estimate.R(travel='exclude',...),
-    'Include' = estimate.R(travel='include',...)
-  ))
-  save.fig('Re-cf-travel',width=6,height=4)
-  return(g)
+run.compare.case.travel = function(what='R',...){
+  return(plot.map[[what]](vs='Travel',list(
+    'Exclude' = estimate.R(case.travel='exclude',...),
+    'Include' = estimate.R(case.travel='include',...)
+  )))
 }
-run.compare.case = function(...){
-  delay = get.config()$delay
-  g = plot.R(vs='Case Definition',list(
-    'Deaths'   = estimate.R(case.def='death', delay=delay,...),
-    'Reported' = estimate.R(case.def='report',delay=delay,...)
-  ))
-  save.fig('Re-cf-case',width=6,height=4)
-  return(g)
+run.compare.case.def = function(what='R',...){
+  t.censor = get.config()$t.censor
+  return(plot.map[[what]](vs='Case',list(
+    'Deaths'   = estimate.R(t.censor=t.censor,case.def='death', ...),
+    'Reported' = estimate.R(t.censor=t.censor,case.def='report',...)
+  )))
 }
-run.compare.adj.death = function(...){
-  g = plot.R(vs='Adjustment',list(
-    'None'    = estimate.R(case.adj=FALSE,    case.kern=1,...),
-    'Overall' = estimate.R(case.adj='overall',case.kern=1,...),
-    'Age'     = estimate.R(case.adj='age',    case.kern=1,...)
-  ))
-  save.fig('Re-cf-adj-death',width=6,height=4)
-  return(g)
+run.compare.case.adj = function(what='R',...){
+  return(plot.map[[what]](vs='Adjustment',list(
+    'None'    = estimate.R(case.adj=FALSE,    case.smooth=1,...),
+    'Overall' = estimate.R(case.adj='overall',case.smooth=1,...),
+    'Age'     = estimate.R(case.adj='age',    case.smooth=1,...)
+  )))
 }
-run.compare.kern = function(...){
-  g = plot.R(vs='Smoothing',list(
-    'None'  = estimate.R(case.kern=0,...),
-    '1 Day' = estimate.R(case.kern=1,...)
-  ))
-  save.fig('Re-cf-kern',width=6,height=4)
-  return(g)
+run.compare.case.smooth = function(what='R',...){
+  return(plot.map[[what]](vs='Smoothing',list(
+    'None'   = estimate.R(case.smooth=0,...),
+    '2 Days' = estimate.R(case.smooth=2,...)
+  )))
 }

@@ -1,7 +1,8 @@
 library('readxl')
 # raw data
-load.data = function(config){
-  return(data.frame(read_excel(config$data.file)))
+load.data = function(){
+  fname = file.path(path.data,'private','ON_LineListforMOH_UofT.xlsx')
+  return(data.frame(read_excel(fname)))
 }
 # data cleaning
 region.clean <<- list(
@@ -30,9 +31,10 @@ get.case.region = function(data.raw){
   }
   return(unlist(lapply(data.raw$Diagnosing_Health_Unit_Area_Desc,map.fun)))
 }
-clean.data = function(config,data.raw){
-  if (missing(data.raw)){ data.raw = load.data(config) }
+clean.data = function(data.raw){
+  if (missing(data.raw)){ data.raw = load.data() }
   data = data.frame(
+    # TODO: add back date type
     dates  = get.case.dates(data.raw),
     local  = get.case.local(data.raw),
     age    = get.case.age(data.raw),
@@ -48,9 +50,4 @@ region.map = list(
   Peel    = 'Peel',
   York    = 'York',
   GTA     = c('Toronto','Durham','Halton','Peel','York')
-)
-# delays
-delay.map = list(
-  report = 5, # assumed
-  death  = round(q(covid.19.distr('sym-death'))(.9)) # X % of deaths
 )

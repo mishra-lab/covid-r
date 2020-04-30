@@ -8,6 +8,12 @@ path.fig   = file.path(path.root,'out','fig')
 path.value = file.path(path.root,'out','value')
 path.data  = file.path(path.root,'data')
 path.distr = file.path(path.root,'data','public','distr')
+path.code  = file.path(path.root,'code')
+source.fun = function(root=path.root,...){
+  invisible(lapply(list(...),function(name){
+    source(file.path(root,name))
+  }))
+}
 # saving stuff
 config.save = FALSE
 save.fig = function(fname,ext='.pdf',...) {

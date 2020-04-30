@@ -1,22 +1,20 @@
 library('EpiEstim')
 library('questionr')
 get.config = function(
-  data.file = file.path(path.data,'private','ON_LineListforMOH_UofT.xlsx'),
-  tau       = round(q(covid.19.distr('gen-time'))(0.9)),
-  t0        = as.date('2020-02-15'),
-  t1        = as.date('2020-04-28'),
-  travel    = 'exclude',  # 'exclude', 'include'
-  case.def  = 'death',    # 'death', 'report'
-  case.adj  = FALSE,      # FALSE, 'overall', 'age'
-  case.unc  = FALSE,      # TRUE, FALSE
-  case.kern = 0,
-  region    = 'GTA',
-  sample    = NULL,
-  delay     = NULL
+  t.tau          = round(q(covid.19.distr('gen-time'))(0.9)),
+  t.start        = as.date('2020-02-15'),
+  t.end          = as.date('2020-04-28'),
+  t.censor       = NULL,          # censor
+  case.def       = 'death',       # 'death', 'report'
+  case.travel    = 'exclude',     # 'exclude', 'include'
+  case.ltc       = 'include',     # 'include', 'exclude'
+  case.adj       = FALSE,         # FALSE, 'overall', 'age'
+  case.sample    = FALSE,         # number of sample iterations
+  case.smooth    = 2,             # sd of gaussian smoothing kernel
+  region         = 'GTA'
 ){
   config = as.list(environment())
-  config$sample = ifelse(is.null(sample), ifelse(config$case.unc,20,1), sample)
-  config$delay = ifelse(is.null(delay), delay.map[[config$case.def]], delay)
+  config$t.censor = ifelse(is.null(t.censor), censor.map[[config$case.def]], t.censor)
   return(config)
 }
 make.re.config = function(config){
@@ -26,20 +24,19 @@ make.re.config = function(config){
   return(list(
     mean_prior = E(R0),
     std_prior  = sd(R0)*1.96,
-    t_start = seq(2, nt-config$tau),
-    t_end   = seq(2+config$tau, nt),
+    t_start = seq(2, nt-config$t.tau),
+    t_end   = seq(2+config$t.tau, nt),
     mean_si = E(G),
     std_si  = sd(G)
   ))
 }
 make.dates = function(config){
-  return(seq(config$t0, config$t1-config$delay, 1))
+  return(seq(config$t.start, config$t.end-config$t.censor, 1))
 }
 make.ifr.weights = function(config,data){
-  cap = function(wt){ min(wt, config$adj.max) }
   # weight functions: point estimate or random sampling
-  cap = function(wt){ min(wt, 200) }
-  wt.fun = ifelse(config$case.unc,
+  cap = function(wt){ min(wt, 100) }
+  wt.fun = ifelse(config$case.sample > 1,
     function(ref,cm){ cap( ref / runif(1, cm$low, cm$high) ) },
     function(ref,cm){ cap( ref / cm$mean) }
   )
@@ -54,17 +51,19 @@ make.ifr.weights = function(config,data){
   return(sapply(1:nrow(data), wt.map))
 }
 make.weights = function(config,data){
-  if (config$case.adj == FALSE){ # no adjustment
-    return(rep(1,nrow(data)))
-  }
-  if (config$case.def == 'death'){ # adjustment for deaths
-    return(make.ifr.weights(config,data))
+  weights = rep(1,nrow(data))
+  # no adjustment
+  if (config$case.adj == FALSE){ return(weights) }
+  # adjustment for deaths
+  if (config$case.def == 'death'){
+    weights = weights * make.ifr.weights(config,data)
   }
   # TODO: adjustment for reported cases
+  return(weights)
 }
 smooth.incid = function(config,incid){
-  if (config$case.kern){
-    return(conv(incid, gauss.kernel(config$case.kern)))
+  if (config$case.smooth){
+    return(conv(incid, gauss.kernel(config$case.smooth)))
   } else {
     return(incid)
   }
@@ -77,7 +76,7 @@ make.incid = function(config,data){
   # define some filters
   select.region = data$region %in% region.map[[config$region]]
   select.death  = !(!data$death & config$case.def=='death')
-  select.local  = !(!data$local & config$travel=='exclude')
+  select.local  = !(!data$local & config$case.travel=='exclude')
   # count function for both local and travel
   count.cases = function(local){
     select = ((local==select.local) & select.region & select.death)
@@ -94,9 +93,9 @@ make.incid = function(config,data){
 }
 estimate.R = function(config,data,...){
   if (missing(config)){ config = get.config(...) }
-  if (missing(data))  { data = clean.data(config) }
+  if (missing(data))  { data = clean.data() }
   R.objs = list()
-  for (s in 1:config$sample){
+  for (s in 1:max(1,config$sample)){
     incid = make.incid(config,data)
     R.objs[[s]] = suppressWarnings({estimate_R(
       incid  = incid,
@@ -126,3 +125,8 @@ merge.R = function(R.objs){
   R$R[['Quantile.0.975(R)']] = qgamma(.975, shape=shape, scale=scale)
   return(R)
 }
+# delays
+censor.map = list(
+  report = 14, # assumed
+  death  = round(q(covid.19.distr('sym-death'))(.9)) # X % of deaths
+)

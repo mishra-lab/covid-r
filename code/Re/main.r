@@ -3,13 +3,11 @@
 # University of Toronto
 source('config.r')
 source('utils.r')
-invisible(sapply(c('data','re','plot','run'),function(fname){
-  source(file.path('Re',paste0(fname,'.r')))
-}))
-config.save = TRUE
-run.default.R()
-run.compare.travel()
-run.compare.case()
-run.compare.adj.death()
-run.compare.kern()
+source.fun(root='Re','re.r','plot.r','run.r')
+source.fun(root='Re/data','moh-uoft.r')
+# run.default.R()
+# run.compare.case.travel()
+# run.compare.case.def()
+# run.compare.case.adj()
+# run.compare.case.smooth()
 print('done')
