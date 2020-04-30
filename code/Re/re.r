@@ -8,7 +8,7 @@ get.config = function(
   case.def       = 'death',       # 'death', 'report'
   case.travel    = 'exclude',     # 'exclude', 'include'
   case.ltc       = 'include',     # 'include', 'exclude'
-  case.adj       = FALSE,         # FALSE, 'overall', 'age'
+  case.adj       = 'overall',     # FALSE, 'overall', 'age'
   case.sample    = FALSE,         # number of sample iterations
   case.smooth    = 2,             # sd of gaussian smoothing kernel
   region         = 'GTA'
@@ -61,9 +61,18 @@ make.weights = function(config,data){
   # TODO: adjustment for reported cases
   return(weights)
 }
-smooth.incid = function(config,incid){
+incid.smooth = function(config,incid){
   if (config$case.smooth){
     return(conv(incid, gauss.kernel(config$case.smooth)))
+  } else {
+    return(incid)
+  }
+}
+incid.ltc = function(config,incid,dates){
+  if (config$case.ltc == 'exclude' & config$case.def == 'report'){
+    ltc = load.ltc.distr()
+    index = as.date(ltc$dates) %in% dates
+    return(incid * (1 - ltc$prop[index]))
   } else {
     return(incid)
   }
@@ -80,10 +89,13 @@ make.incid = function(config,data){
   # count function for both local and travel
   count.cases = function(local){
     select = ((local==select.local) & select.region & select.death)
-    return(smooth.incid(config,as.vector(wtd.table(
+    incid = as.vector(wtd.table(
       x = factor(x=as.double(data$dates[select]), levels=as.double(dates)),
       weights = weights[select],
-    ))))
+    ))
+    incid = incid.ltc(config,incid,dates)
+    incid = incid.smooth(config,incid)
+    return(incid)
   }
   return(data.frame(
     local    = count.cases(local=TRUE),
@@ -93,7 +105,7 @@ make.incid = function(config,data){
 }
 estimate.R = function(config,data,...){
   if (missing(config)){ config = get.config(...) }
-  if (missing(data))  { data = clean.data() }
+  if (missing(data))  { data = load.case.data() }
   R.objs = list()
   for (s in 1:max(1,config$sample)){
     incid = make.incid(config,data)

@@ -11,6 +11,12 @@ run.compare.case.travel = function(what='R',...){
     'Include' = estimate.R(case.travel='include',...)
   )))
 }
+run.compare.case.ltc = function(what='R',...){
+  return(plot.map[[what]](vs='LTC',list(
+    'Exclude' = estimate.R(case.def='report',case.ltc='exclude',...),
+    'Include' = estimate.R(case.def='report',case.ltc='include',...)
+  )))
+}
 run.compare.case.def = function(what='R',...){
   t.censor = get.config()$t.censor
   return(plot.map[[what]](vs='Case',list(

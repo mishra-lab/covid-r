@@ -1,9 +1,4 @@
 library('readxl')
-# raw data
-load.data = function(){
-  fname = file.path(path.data,'private','ON_LineListforMOH_UofT.xlsx')
-  return(data.frame(read_excel(fname)))
-}
 # data cleaning
 region.clean <<- list(
   'TORONTO (3895)'       = 'Toronto',
@@ -31,8 +26,9 @@ get.case.region = function(data.raw){
   }
   return(unlist(lapply(data.raw$Diagnosing_Health_Unit_Area_Desc,map.fun)))
 }
-clean.data = function(data.raw){
-  if (missing(data.raw)){ data.raw = load.data() }
+load.case.data = function(){
+  fname = file.path(path.data,'private','ON_LineListforMOH_UofT.xlsx')
+  data.raw = data.frame(read_excel(fname))
   data = data.frame(
     # TODO: add back date type
     dates  = get.case.dates(data.raw),
@@ -51,3 +47,7 @@ region.map = list(
   York    = 'York',
   GTA     = c('Toronto','Durham','Halton','Peel','York')
 )
+load.ltc.distr = function(){
+  fname = file.path(path.data,'private','ltc-distr.csv')
+  return(read.csv(fname))
+}
