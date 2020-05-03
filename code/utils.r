@@ -1,7 +1,18 @@
+library('readxl')
 ggcolor = function(n){
   return(hcl(h=seq(15,375,length=n+1),l=65,c=100)[1:n])
 }
-as.date = function(dates){
+file.ext = function(fname){
+  return(tail(strsplit(fname,'\\.')[[1]],1))
+}
+load.data = function(fname){
+  return(list(
+    xlsx = function(fname){ data.frame(read_excel(fname)) },
+    csv  = function(fname){ read.csv(fname) },
+    json = function(fname){ fromJSON(file=fname) }
+  )[[file.ext(fname)]](fname))
+}
+as.date = function(dates,format='%Y-%m-%d'){
   return(as.Date(
     dates,
     format='%Y-%m-%d',
@@ -21,7 +32,7 @@ gauss.kernel = function(sigma){
 }
 # load json file from distr directory
 distr.json = function(name){
-  return(fromJSON(file=file.path(path.distr,paste0(name,'.json'))))
+  return(load.data(file.path(path.distr,paste0(name,'.json'))))
 }
 # common COVID19 distribution definitions using distr
 covid.19.distr = function(param,which='master'){

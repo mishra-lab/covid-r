@@ -13,6 +13,7 @@ plot.R = function(R.objs,vs){
   )
   g = g +
     theme_light() +
+    theme(legend.position='top') +
     labs(title='',x='Time (days)',y='R(t)') +
     coord_cartesian(ylim = c(0,5)) 
   if (is.list(R.objs)){
@@ -26,6 +27,7 @@ plot.cases = function(R.objs,what='all',cum=FALSE,vs){
   if (missing(vs)){ vs = '.' }
   cfun  = ifelse(cum,cumsum,identity)
   iname = list(all='I',local='I_local',imported='I_imported')[[what]]
+  yname = list(all='Total',local='Local',imported='Imported')[[what]]
   df = data.frame(dates=as.date(seq(
     min(sapply(R.objs,function(R.obj){ head(R.obj$dates,1) })),
     max(sapply(R.objs,function(R.obj){ tail(R.obj$dates,1) })),
@@ -38,7 +40,8 @@ plot.cases = function(R.objs,what='all',cum=FALSE,vs){
   g = ggplot(dfm,aes_string(x='dates',y='Cases',col=vs)) +
     geom_line() +
     theme_light() +
-    labs(x='Time (days)',y='Cases')
+    theme(legend.position='top') +
+    labs(x='Time (days)',y=paste(yname,'Cases'))
   if (length(R.objs)==1){
     g = g + guides(col=FALSE)
   }

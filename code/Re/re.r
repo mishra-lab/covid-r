@@ -1,24 +1,30 @@
+# estimate R based on count data
 library('EpiEstim')
 library('questionr')
 get.config = function(
-  t.tau          = round(q(covid.19.distr('gen-time'))(0.9)),
-  t.start        = as.date('2020-02-15'),
-  t.end          = as.date('2020-04-28'),
-  t.censor       = NULL,          # censor
-  case.def       = 'death',       # 'death', 'report'
-  case.travel    = 'exclude',     # 'exclude', 'include'
-  case.ltc       = 'include',     # 'include', 'exclude'
-  case.adj       = 'overall',     # FALSE, 'overall', 'age'
-  case.sample    = FALSE,         # number of sample iterations
-  case.smooth    = 2,             # sd of gaussian smoothing kernel
-  region         = 'GTA'
+  t.tau            = round(q(covid.19.distr('gen-time'))(0.9)),
+  t.start          = as.date('2020-02-25'),
+  t.end            = as.date('2020-04-29'),
+  t.censor         = NULL,          # censor
+  data.name        = 'moh',         # 'moh','olis','iphis'
+  region           = 'GTA',         # 'GTA'
+  data.source      = 'iphis',       # 'iphis','olis'
+  case.def         = 'report',      # 'death', 'report'
+  case.travel      = 'local',       # 'local', 'imported', 'exclude'
+  case.main        = 'local',       # 'local', 'imported', 'exclude'
+  case.ltc         = 'local',       # 'local', 'imported', 'exclude'
+  case.adj         = 'overall',     # FALSE, 'overall', 'age'
+  import.frac      = 1,             # fraction of import with local contact
+  unkn.import.frac = 0,             # fraction of local with unknown import contact
+  case.smooth      = 1,             # sd of gaussian smoothing kernel
+  case.sample      = FALSE          # number of sample iterations
 ){
   config = as.list(environment())
   config$t.censor = ifelse(is.null(t.censor), censor.map[[config$case.def]], t.censor)
   return(config)
 }
-make.re.config = function(config){
-  nt = length(make.dates(config))
+get.re.config = function(config){
+  nt = length(get.dates(config))
   G  = covid.19.distr('gen-time')
   R0 = covid.19.distr('R0')
   return(list(
@@ -30,90 +36,22 @@ make.re.config = function(config){
     std_si  = sd(G)
   ))
 }
-make.dates = function(config){
+get.dates = function(config){
   return(seq(config$t.start, config$t.end-config$t.censor, 1))
 }
-make.ifr.weights = function(config,data){
-  # weight functions: point estimate or random sampling
-  cap = function(wt){ min(wt, 100) }
-  wt.fun = ifelse(config$case.sample > 1,
-    function(ref,cm){ cap( ref / runif(1, cm$low, cm$high) ) },
-    function(ref,cm){ cap( ref / cm$mean) }
-  )
-  # weight maps based on infection fatality ratio
-  ifr = distr.json('ifr')
-  ref = ifr$overall$mean
-  wt.map = list(
-    overall = function(i){ wt.fun( ref, ifr$overall ) },
-    age = function(i){ wt.fun( ref, ifr$age$groups[[ min(9,floor(data$age[i]/10)+1) ]] ) }
-  )[[ config$case.adj ]]
-  # compute the weights
-  return(sapply(1:nrow(data), wt.map))
-}
-make.weights = function(config,data){
-  weights = rep(1,nrow(data))
-  # no adjustment
-  if (config$case.adj == FALSE){ return(weights) }
-  # adjustment for deaths
-  if (config$case.def == 'death'){
-    weights = weights * make.ifr.weights(config,data)
-  }
-  # TODO: adjustment for reported cases
-  return(weights)
-}
-incid.smooth = function(config,incid){
-  if (config$case.smooth){
-    return(conv(incid, gauss.kernel(config$case.smooth)))
-  } else {
-    return(incid)
-  }
-}
-incid.ltc = function(config,incid,dates){
-  if (config$case.ltc == 'exclude' & config$case.def == 'report'){
-    ltc = load.ltc.distr()
-    index = as.date(ltc$dates) %in% dates
-    return(incid * (1 - ltc$prop[index]))
-  } else {
-    return(incid)
-  }
-}
-make.incid = function(config,data){
-  # define the dates
-  dates = make.dates(config)
-  # define the weights (may be random)
-  weights = make.weights(config,data)
-  # define some filters
-  select.region = data$region %in% region.map[[config$region]]
-  select.death  = !(!data$death & config$case.def=='death')
-  select.local  = !(!data$local & config$case.travel=='exclude')
-  # count function for both local and travel
-  count.cases = function(local){
-    select = ((local==select.local) & select.region & select.death)
-    incid = as.vector(wtd.table(
-      x = factor(x=as.double(data$dates[select]), levels=as.double(dates)),
-      weights = weights[select],
-    ))
-    incid = incid.ltc(config,incid,dates)
-    incid = incid.smooth(config,incid)
-    return(incid)
-  }
-  return(data.frame(
-    local    = count.cases(local=TRUE),
-    imported = count.cases(local=FALSE),
-    dates    = dates
-  ))
-}
-estimate.R = function(config,data,...){
+estimate.R = function(config,...){
   if (missing(config)){ config = get.config(...) }
-  if (missing(data))  { data = load.case.data() }
+  dates = get.dates(config)
   R.objs = list()
-  for (s in 1:max(1,config$sample)){
-    incid = make.incid(config,data)
+  for (s in 1:max(1,config$case.sample)){
+    attach(env[[config$data.source]])
+    incid = get.incid(config,dates)
     R.objs[[s]] = suppressWarnings({estimate_R(
       incid  = incid,
       method = 'parametric_si',
-      config = make_config(make.re.config(config))
+      config = make_config(get.re.config(config))
     )})
+    detach(env[[config$data.source]])
   }
   return(merge.R(R.objs))
 }
@@ -137,7 +75,7 @@ merge.R = function(R.objs){
   R$R[['Quantile.0.975(R)']] = qgamma(.975, shape=shape, scale=scale)
   return(R)
 }
-# delays
+# report censoring
 censor.map = list(
   report = 14, # assumed
   death  = round(q(covid.19.distr('sym-death'))(.9)) # X % of deaths
