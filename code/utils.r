@@ -40,7 +40,22 @@ covid.19.distr = function(param,which='master'){
   distr = list(
     norm  = Norm,
     gamma = Gammad,
-    lognorm = Lnorm
+    lognorm = Lnorm,
+    weibull = Weibull
   )[[spec$distr]]
   return(do.call(distr,spec$params))
+}
+# get lognorm params from mean and sd
+lognorm.params = function(mu,sigma){
+  return(list(
+    meanlog = log(mu / sqrt(1 + (sigma/mu)^2)),
+    sdlog   = sqrt(log(1 + (sigma/mu)^2))
+  ))
+}
+# get gamma params from mean and sd
+gamma.params = function(mu,sigma){
+  return(list(
+    shape = mu^2 / sigma^2,
+    scale = sigma^2 / mu
+  ))
 }

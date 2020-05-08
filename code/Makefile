@@ -1,11 +1,11 @@
-.PHONY: Re
-Re:
+Re-main:
 	Rscript Re/main.r
 
-.PHONY: mwe
-mwe:
-	Rscript .debug/mwe.r
+debug:
+	Rscript .debug/params.r
 
-.PHONY: deconv
-deconv:
-	Rscript deconv/main.r
+deconv-deconv:
+	Rscript deconv/deconv.r
+
+deconv-Re:
+	Rscript deconv/re+distr.r

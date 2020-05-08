@@ -4,11 +4,13 @@ library('questionr')
 get.config = function(
   t.tau            = round(q(covid.19.distr('gen-time'))(0.9)),
   t.start          = as.date('2020-02-25'),
-  t.end            = as.date('2020-04-29'),
+  t.end            = as.date('2020-05-01'),
   t.censor         = NULL,          # censor
+  gen.time         = NULL,          # generation time source
   data.name        = 'moh',         # 'moh','olis','iphis'
   region           = 'GTA',         # 'GTA'
   data.source      = 'iphis',       # 'iphis','olis'
+  case.date        = 'episode',     # 'episode', 'report'
   case.def         = 'report',      # 'death', 'report'
   case.travel      = 'local',       # 'local', 'imported', 'exclude'
   case.main        = 'local',       # 'local', 'imported', 'exclude'
@@ -20,12 +22,13 @@ get.config = function(
   case.sample      = FALSE          # number of sample iterations
 ){
   config = as.list(environment())
-  config$t.censor = ifelse(is.null(t.censor), censor.map[[config$case.def]], t.censor)
+  if (is.null(gen.time)){ config$gen.time = list(param='gen-time',which='master') }
+  if (is.null(t.censor)) { config$t.censor = censor.map[[config$case.def]] } 
   return(config)
 }
 get.re.config = function(config){
   nt = length(get.dates(config))
-  G  = covid.19.distr('gen-time')
+  G  = do.call(covid.19.distr,config$gen.time)
   R0 = covid.19.distr('R0')
   return(list(
     mean_prior = E(R0),
@@ -77,6 +80,6 @@ merge.R = function(R.objs){
 }
 # report censoring
 censor.map = list(
-  report = 14, # assumed
+  report = 3, # assumed
   death  = round(q(covid.19.distr('sym-death'))(.9)) # X % of deaths
 )

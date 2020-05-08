@@ -17,12 +17,21 @@ get.case.region = function(data.raw){
   }
   return(unlist(lapply(data.raw$Diagnosing_Health_Unit_Area_Desc,map.fun)))
 }
-load.case.data = function(){
+get.case.date = function(config,data.raw){
+  if (config$case.date == 'episode'){
+    return(as.date(data.raw$Accurate_Episode_Date))
+  }
+  if (config$case.date == 'report'){
+    return(as.date(data.raw$Case_Reported_Date))
+  }
+}
+
+load.case.data = function(config){
   fname = file.path(path.data,'private','ON_LineListforMOH_UofT.xlsx')
   data.raw = load.data(fname)
   return(data.frame(
     # TODO: add back date type
-    dates  = as.date(data.raw$Accurate_Episode_Date),
+    dates  = get.case.date(config,data.raw),
     travel = data.raw$Case_AcquisitionInfo == 'Travel-Related',
     age    = data.raw$Age_At_Time_of_Illness,
     death  = !is.na(data.raw$Client_Death_date),

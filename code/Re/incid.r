@@ -77,7 +77,7 @@ get.cases = function(config,dates,distr,data,src){
   return(cases)
 }
 get.incid = function(config,dates){
-  data = load.case.data()
+  data = load.case.data(config)
   distr = load.cum.distr(dates)
   cases = list(
     travel = get.cases(config,dates,distr,data,'travel'),

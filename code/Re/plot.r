@@ -1,7 +1,7 @@
 library('ggplot2')
 library('reshape2')
 
-plot.R = function(R.objs,vs){
+plot.R = function(R.objs,vs,ylim=c(0,5),xlim=NULL){
   if (is.list(R.objs) & length(R.objs)==1){ R.objs = R.objs[[1]] }
   if (missing(vs)){ vs = '' }
   g = estimate_R_plots(
@@ -13,9 +13,11 @@ plot.R = function(R.objs,vs){
   )
   g = g +
     theme_light() +
-    theme(legend.position='top') +
     labs(title='',x='Time (days)',y='R(t)') +
-    coord_cartesian(ylim = c(0,5)) 
+    coord_cartesian(ylim = ylim)
+  if (!is.null(xlim)){
+    g = g + scale_x_date(date_breaks='2 week',date_labels='%b %d',limits=as.date(xlim))
+  }
   if (is.list(R.objs)){
     g = g + guides(fill=FALSE) +
       scale_color_discrete(name=vs,labels=names(R.objs))
