@@ -70,4 +70,4 @@ ggplot(data=dfm, aes(x=t,y=Probability,color=Distribution,linetype=Distribution)
   labs(x='Time (days)') +
   theme_light() +
   theme(legend.text.align=0,legend.position=c(.99,.99),legend.justification=c(1,1))
-save.fig('deconv/deconv',width=5,height=3)
+save.fig('.tmp/deconv/deconv',width=5,height=3)

@@ -3,6 +3,8 @@ data/private/
 
 # misc
 .old/
+.comment/
+.tmp/
 .DS_Store
 
 # code
@@ -31,3 +33,4 @@ Rplots.pdf
 *.synctex.gz
 *.synctex.gz
 *.toc
+

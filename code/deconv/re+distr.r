@@ -38,7 +38,7 @@ for (name in names(refs)){
 # plot R
 plot.R(R.objs,vs='Source',ylim=c(0,4),xlim=c('2020-03-08','2020-04-15')) +
   theme(legend.text.align=0,legend.position=c(.99,.99),legend.justification=c(1,1))
-save.fig('deconv/Re',width=5,height=4)
+save.fig('.tmp/deconv/Re',width=5,height=4)
 # plot distr
 D = melt(distr,id.vars='t',variable.name='Source',value.name='Probability')
 ggplot(data=D, aes(x=t,y=Probability,color=Source)) +
@@ -47,4 +47,4 @@ ggplot(data=D, aes(x=t,y=Probability,color=Source)) +
   labs(x='Time (days)') +
   theme_light() +
   theme(legend.text.align=0,legend.position=c(.99,.99),legend.justification=c(1,1))
-save.fig('deconv/distr-refs',width=5,height=3)
+save.fig('.tmp/deconv/distr-refs',width=5,height=3)
