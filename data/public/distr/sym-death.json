@@ -2,8 +2,8 @@
   "master": {
     "distr": "lognorm",
     "params": {
-      "meanlog": 2.5774,
-      "sdlog": 0.4399
+      "meanlog": 2.577391,
+      "sdlog": 0.4399035
     },
     "doi": "10.3390/jcm9020538",
     "ref": "Linton2020",

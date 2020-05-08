@@ -2,11 +2,11 @@
   "master": {
     "distr": "gamma",
     "params": {
-      "shape": 1.436,
-      "scale": 3.295
+      "shape": 1.813088,
+      "scale": 2.198667
     },
     "doi": null,
     "ref": "Knight2020",
-    "note": "via deconvolution of inc-per from ser-int"
+    "note": "via deconvolution of inc-per from ser-int with J = KL-D"
   }
 }

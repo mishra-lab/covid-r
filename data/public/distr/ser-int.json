@@ -5,8 +5,64 @@
       "mean": 3.96,
       "sd": 4.75
     },
+    "N": 468,
     "doi": "10.3201/eid2606.200357",
     "ref": "Du2020",
-    "note": "Table S1: All"
+    "note": "Table S2: Original data"
+  },
+  "Zhang2020": {
+    "distr": "gamma",
+    "params": {
+      "shape": 3.618761,
+      "scale": 1.415650
+    },
+    "N": 35,
+    "doi": "10.1101/2020.02.21.20026328",
+    "ref": "Zhang2020",
+    "note": "Results P7; parameters inferred by mean & 95% CI"
+  },
+  "Nishiura2020": {
+    "distr": "lognorm",
+    "params": {
+      "meanlog": 1.386262,
+      "sdlog": 0.5679803
+    },
+    "N": 28,
+    "doi": "10.1016/j.ijid.2020.02.060",
+    "ref": "Nishiura2020",
+    "note": "Results P1; Used by: CMMID 10.5281/zenodo.3733047"
+  },
+  "Zhao2020": {
+    "distr": "gamma",
+    "params": {
+      "shape": 2.151111,
+      "scale": 2.045455
+    },
+    "N": 21,
+    "doi": "10.1101/2020.02.21.20026559",
+    "ref": "Zhao2020",
+    "note": "Results P1; parameters inferred by mean & SD"
+  },
+  "Li2020": {
+    "distr": "gamma",
+    "params": {
+      "shape": 4.865917,
+      "scale": 1.541333
+    },
+    "N": 6,
+    "doi": "10.1056/NEJMoa2001316",
+    "ref": "Li2020",
+    "note": "Results P3; parameters inferred by mean & SD"
+  },
+  "rt.live": {
+    "distr": "gamma",
+    "params": {
+      "shape": 6,
+      "scale": 1.5
+    },
+    "N": null,
+    "doi": null,
+    "ref": null,
+    "note": "No justification & unusually high; https://rt.live"
   }
 }

@@ -5,8 +5,53 @@
       "shape": 5.807,
       "scale": 0.948
     },
+    "N": 181,
     "doi": "10.7326/m20-0504",
     "ref": "Lauer2020",
     "note": "Appendix Table 2: Gamma"
+  },
+  "Tindale2020Tianjin": {
+    "distr": "weibull",
+    "params": {
+      "shape": 2.25,
+      "scale": 10.15
+    },
+    "N": 135,
+    "doi": "10.1101/2020.03.03.20029983",
+    "ref": "Tindale2020",
+    "note": "Results 3.2 P1."
+  },
+  "Tindale2020Singapore": {
+    "distr": "weibull",
+    "params": {
+      "shape": 1.88,
+      "scale": 7.97
+    },
+    "N": 93,
+    "doi": "10.1101/2020.03.03.20029983",
+    "ref": "Tindale2020",
+    "note": "Results 3.2 P1."
+  },
+  "Backer2020": {
+    "distr": "weibull",
+    "params": {
+      "shape": 3.037947,
+      "scale": 7.163034
+    },
+    "N": 88,
+    "doi": "10.2807/1560-7917.ES.2020.25.5.2000062",
+    "ref": "Backer2020",
+    "note": "Table 1 (Weibull)"
+  },
+  "Li2020": {
+    "distr": "lognorm",
+    "params": {
+      "meanlog": 1.4245675,
+      "sdlog": 0.6694581
+    },
+    "N": 10,
+    "doi": "10.1056/NEJMoa2001316",
+    "ref": "Li2020",
+    "note": "Results P3; parameters inferred by mean & Q.95"
   }
 }
