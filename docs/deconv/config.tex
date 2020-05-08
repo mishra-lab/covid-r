@@ -1,0 +1,75 @@
+% style
+\usepackage[osf]{mathpazo}
+\usepackage[hang]{footmisc}
+\setlength{\parskip}{8pt}
+\setlength{\parindent}{0pt}
+\righthyphenmin=3
+\lefthyphenmin=3
+\setlength{\skip\footins}{2em plus 6pt minus 3pt}
+\setlength{\belowcaptionskip}{6pt}
+\setlength{\abovecaptionskip}{6pt}
+\let\appendixo\appendix
+\renewcommand{\appendix}{%
+  \clearpage
+  \appendixo
+  \numberwithin{table}{section}
+  \numberwithin{figure}{section}
+}
+% refs
+\usepackage[
+  colorlinks,
+  citecolor=purple,
+]{hyperref}
+\usepackage[
+  backend=bibtex,
+  url=false,
+  maxcitenames=1,
+  sorting=none,
+  style=numeric-comp,
+]{biblatex}
+\addbibresource{refs.bib}
+\renewcommand*{\multicitedelim}{\addcomma\,}
+\renewcommand{\bibfont}{\small}
+% commands
+\usepackage{xspace,amsmath}
+\newcommand{\covid}{\mbox{\textsc{covid-19}}\xspace}
+\newcommand{\gta}{\textsc{gta}\xspace}
+\newcommand{\floatfoot}[1]{\vskip\belowcaptionskip {\footnotesize{#1}}}
+\newcommand{\conv}{\mathop{\ast}}
+\newcommand{\deconv}{\mathop{\ast^{-1}}}
+\renewcommand{\Re}{R_e}
+\newcommand{\op}[2]{\mathop{\mathrm{#1}}{\left(#2\right)}}
+\newcommand{\mono}[1]{{\small\texttt{#1}}}
+\newcommand{\hreftt}[1]{\href{#1}{\mono{#1}}}
+\newcommand{\mle}{\textsc{mle}\xspace}
+\newcommand{\sd}{\textsc{sd}\xspace}
+% floats
+\usepackage{graphicx,booktabs}
+\graphicspath{{fig/}}
+% tikz
+\usepackage{tikz,xcolor}
+\usetikzlibrary{arrows.meta,decorations.pathreplacing}
+\newlength{\dx}\setlength{\dx}{10mm}
+\tikzset{
+  event/.style = {
+    circle,
+    minimum width=1\dx,
+    inner sep=0\dx,
+    draw=#1,
+    fill=#1!10!white,
+  },
+  arrow/.style = {
+    > = LaTeX,
+  },
+  brace/.style = {
+    decorate,
+    decoration={brace,mirror,amplitude=0.15\dx},
+  },
+  plot/.style 2 args = {
+    samples=100,
+    smooth,
+    draw=#1,
+    fill=#1!10!white,
+    variable=#2,
+  }
+}

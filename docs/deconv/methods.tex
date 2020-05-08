@@ -1,0 +1,132 @@
+First, we designed a simple method to
+recover the generation time distribution
+from parametric definitions of
+the incubation period and the serial interval distributions.
+Then, we applied this method to \covid using
+distributions reported in the literature.
+Finally, we compared $\Re(t)$ estimated for
+the Greater Toronto Area (\gta) region of Canada
+between March 08 and April 15, 2020 using
+the estimated generation time distribution versus
+serial interval distributions reported in the literature.
+% ==============================================================================
+\subsection{Estimating the Generation Time Distribution}
+Let $i$ and $i+1$ be the indices of an infector-infectee pair.
+Let $f_i$ and $f_{i+1}$ be the respective times of infection,
+such that $g_i = [f_{i+1} - f_i] \sim G(\tau)$ is the generation time.
+Let $y_i$ be the time of symptom onset in case $i$,
+such that $h_i = [y_i - f_i] \sim H(\tau)$ is the incubation period.
+Finally, let $s_i = [y_{i+1} - y_i] \sim S(\tau)$ be the serial interval.
+Figure~\ref{fig:nodes} illustrates the variables and distributions graphically.
+We assume all distributions are independent,
+although previous work has shown that
+the generation time and incubation period may be correlated,
+for example in the context of measles \cite{Klinkenberg2011}.
+\par
+\begin{figure}
+  \centering
+  \input{tikz-model}
+  \caption{Random variables involved in the serial interval}
+  \label{fig:nodes}
+  \floatfoot{Notation ---
+    $i$: infector index;
+    $i+1$: infectee index;
+    $f_i$: time of infection;
+    $y_i$: time of symptom onset;
+    $G(\tau)$: generation time distribution;
+    $H(\tau)$: incubation time distribution;
+    $S(\tau)$: serial interval distribution.}
+\end{figure}
+\par
+Rearranging, we have:
+$s_i = g_i + h_{i+1} - h_i$.
+The probability distribution of
+the sum of independent random variables
+is the convolution of their respective distributions~\cite{Hogg2005},
+where convolution $\conv$ is defined as:
+\begin{equation}\label{eq:conv}
+  \left[H \conv F\right](\tau) = \int_{-\infty}^{+\infty} H(z) F(\tau - z) \,dz
+\end{equation}
+Thus $S(\tau)$ can be defined as:
+\begin{equation}\label{eq:S}
+  S(\tau) = G(\tau) \conv H(\tau) \conv H(-\tau)
+\end{equation}
+and $G(\tau)$ can be recovered using deconvolution $\deconv$ as:
+\begin{equation}\label{eq:G}
+  G(\tau) = \left[S(\tau) \deconv H(\tau)\right] \deconv H(-\tau)
+\end{equation}
+\par
+Some definitions of $S(\tau)$ and $H(\tau)$
+may yield forms of $G(\tau)$ via deconvolution in \eqref{eq:G}
+which are implausible or intractable.
+So, we defined a parametric form ${\hat{G}(\tau\mid\theta)}$,
+and found parameters $\theta^*$ that
+minimized the Kullback-Leibler divergence between
+the observed $S(\tau)$ and ${\hat{S}(\tau\mid\theta)}$
+obtained via $\eqref{eq:S}$ using ${\hat{G}(\tau\mid\theta^*)}$.
+It can be shown that such parameters $\theta^*$
+provide the maximum likelihood estimate (\mle) of
+$S(\tau)$ under $\hat{G}(\tau\mid\theta)$.
+% ==============================================================================
+\subsection{Application}
+% ------------------------------------------------------------------------------
+\subsubsection{Generation Time}
+We identified several parameterizations of
+the \covid incubation period and serial interval
+following the review by \textcite{Park2020} (Table~\ref{tab:distr}).%
+\footnote{Some studies did not provide enough information
+  to define a parametric form (e.g.\ only reported the mean).}
+For our analysis, we used
+the negative-permitting serial interval from \cite{Du2020} ({$N=468$}):
+\begin{equation}
+S(\tau) = \op{Norm}{\mu=3.96,~\sigma=4.75}
+\end{equation}
+and the incubation period from \cite{Lauer2020} ({$N=181$}):
+\begin{equation}
+H(\tau) = \op{Gam}{\alpha=5.807,~\beta=0.948}
+\end{equation}
+We assumed a Gamma parametric form for the generation time distribution
+${\hat{G}(\tau\mid\theta)}$, with
+$\theta = [\alpha\,(\textrm{shape}), \beta\,(\textrm{scale})]$,
+for consistency with downstream assumptions used in calculating $\Re(t)$.
+We then minimized the Kullback-Leibler divergence between
+$S(\tau)$ and $\hat{S}(\tau\mid\theta)$ using
+the Nelder-Mead optimization method
+in the \mono{optimization} R package\,%
+\footnote{\hreftt{https://cran.r-project.org/web/packages/optimization}}
+to obtain the \mle generation time distribution parameters $\theta^*$.
+% ------------------------------------------------------------------------------
+\subsubsection{Effective Reproduction Number}
+In the model described by \textcite{Cori2013},
+the incidence $I$ at time $t$ is given by
+the integral over all previous infections,
+multiplied by their respective infectivity $\omega$
+at time $\tau$ since infection,
+collectively multiplied by the effective reproductive number
+$\Re$ at time $t$.
+This model yields the following definition of $\Re(t)$:
+\begin{equation}
+\Re(t) = I(t) {\left[\int_{0}^{t}{I(t-\tau) \omega(\tau) d\tau}\right]}^{-1}
+\end{equation}
+The infectivity profile $\omega(\tau)$ is equivalent to
+the generation time distribution $G(\tau)$.
+Given $I(t)$ and $G(\tau)$,
+probabilistic estimates of $\Re(t)$
+can then be resolved in a Bayesian framework,
+as implemented in the \mono{EpiEstim} R package.%
+\footnote{\hreftt{https://cran.r-project.org/web/packages/EpiEstim}}
+\par
+In order to quantify $\Re(t)$ of \covid in \gta, Canada,
+we used reported cases in the region between March 08 and April 15 2020
+as the incidence time series $I(t)$.%
+\footnote{We did not stratify incidence by
+  ``imported'' vs ``local'' transmission events,
+  in order to quantify overall epidemic growth.}
+We smoothed $I(t)$ using a Gaussian kernel with $\sigma = 1$ day
+to reflect uncertainty in reporting delay.
+We then compared estimates of $\Re(t)$ using
+the \mle generation time distribution
+versus serial interval distributions reported in the literature,
+including negative-permitting (Normal \cite{Du2020}),
+and non-negative (Gamma \cite{Zhang2020}, Log-Normal \cite{Nishiura2020})
+distributions.

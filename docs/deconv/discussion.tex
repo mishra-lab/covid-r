@@ -1,0 +1,45 @@
+We have demonstrated how to estimate
+a non-negative generation time distribution
+based on negative serial interval
+and non-negative incubation period distributions.
+Using reported parametric \covid distributions,
+we estimated a Gamma-distributed generation time
+with a mean of $4$ days and
+$95\%$ of transmissions occurring before $10$ days.
+When approximating the generation time distribution
+by non-negative serial interval distribution,
+$95\%$ of transmissions are still expected within $10$ days
+\cite{Zhang2020,Nishiura2020},
+but the proportion of pre-symptomatic infections may be underestimated
+due to higher mean serial interval versus generation time
+(Figure~\ref{fig:distr-refs}) \cite{Ganyani2020,Tindale2020}.
+\par
+Estimated effective reproduction number $\Re(t)$
+based on the generation time distribution
+was lower than $\Re(t)$ based on
+non-negative serial interval distributions reported in the literature,
+suggesting that the latter may overestimate
+the infection transmission potential.
+By contrast, estimation of $\Re(t)$ using
+negative permitting serial intervals,
+such as that reported by \textcite{Du2020},
+may result in underestimated infection transmission potential.
+\par
+Our analysis has three major limitations.
+First, we assumed that
+generation time and incubation period were independent,
+although \textcite{Klinkenberg2011} showed that
+this is false at least in measles.
+Second, we did not leverage line-listed (subject-level) data
+to estimate the generation time distribution,
+such as in \cite{Ganyani2020} and \cite{Klinkenberg2011}.
+Rather, we focused on parametric distributions,
+which could, for example, be obtained by meta-analysis.
+Finally, we did not propagate uncertainty in the reported
+serial interval and incubation period distributions
+through our results to obtain confidence intervals for
+the generation time parameterization.
+To model distribution uncertainty,
+future work could examine joint estimation of
+the generation time, serial interval, and $\Re(t)$ within
+the same Bayesian framework as described by \cite{Cori2013}.

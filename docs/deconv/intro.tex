@@ -1,0 +1,41 @@
+The effective reproduction number $\Re(t)$ provides
+an instantaneous measure of potential for epidemic growth,
+after considering herd immunity and interventions.
+\textcite{Cori2013} provide a method to estimate $\Re(t)$
+in quasi-real time based on only two inputs:\
+an incidence time series,%
+\footnote{Incidence may be further stratified by
+  imported versus locally generated cases
+  to quantify local transmission dynamics.}
+and the generation time distribution.
+The generation time is defined as
+the time between infection events in an infector-infectee pair.
+\par
+When estimating $\Re(t)$
+in previous epidemics \cite{Cori2013,Ali2013,Aylward2014},
+and in \covid \cite{Pan2020,Cowling2020,Leung2020,Liu2020},
+the generation time has been approximated by the serial interval,
+defined as the time between symptom onset in an infector-infectee pair,
+since only the latter is directly observable.
+This approximation is reasonable for infectious diseases
+where onset of infectiousness and symptoms is simultaneous \cite{Cori2013}.
+However, potential pre-symptomatic transmission of \covid
+\cite{Kimball2020,Du2020}
+renders approximation of generation time by serial interval problematic.
+Namely, while generation time is strictly positive,
+the serial interval can be negative due to
+variability in the incubation period,
+such as in 59 of 468 (12.6\%) reported cases in~\cite{Du2020}.
+As a result, there have been differences in
+whether or not non-negative distributions are fit
+to \covid serial interval data
+\cite{Du2020,Zhang2020,Nishiura2020,Ganyani2020}.
+\par
+We aimed to show that it might be unnecessary to
+fit non-negative distributions to serial interval data
+for the purpose of calculating $\Re(t)$,
+since a non-negative generation time distribution can be inferred
+based on the incubation period and serial interval distributions.
+We also explored the implications for the estimated $\Re(t)$
+of using non-negative serial interval distributions
+versus an inferred generation time distribution.

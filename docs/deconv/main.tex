@@ -1,0 +1,28 @@
+\documentclass{article}
+\input{meta}
+\input{config}
+% \immediate\write18{./cpfig.sh} % copy figures from .tmp folder
+% ==============================================================================
+\begin{document}
+\maketitle
+\begin{abstract}
+  \input{abstract}
+\end{abstract}
+\clearpage
+% ==============================================================================
+\section{Introduction}
+\input{intro}
+\section{Methods}
+\input{methods}
+\section{Results}
+\input{results}
+\section{Discussion}
+\input{discussion}
+\clearpage
+\printbibliography
+\appendix
+\section{Data \& Code}
+\input{app-data}
+% ==============================================================================
+\end{document}
+% ==============================================================================

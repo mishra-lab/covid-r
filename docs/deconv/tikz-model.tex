@@ -1,0 +1,24 @@
+\newcommand{\gauss}[2]{1/(#2*sqrt(2*pi))*exp(-0.5*((\t-#1)/#2)^2)}
+\definecolor{infector}{HTML}{cccccc}
+\definecolor{infectee}{HTML}{0033ff}
+\definecolor{symptoms}{HTML}{ff0000}
+\begin{tikzpicture}
+  \node (f1) [event=infector]             at ( 0\dx, 4\dx) {$f_i$};
+  \node (f2) [event=infectee]             at ( 2\dx, 3\dx) {$f_{i+1}$};
+  \node (y1) [event=infector!50!symptoms] at ( 0\dx, 2\dx) {$y_i$};
+  \node (y2) [event=infectee!50!symptoms] at ( 2\dx, 1\dx) {$y_{i+1}$};
+  \draw[arrow,->]   (f1) -- node[near start, above right]{$G(\tau)$} (f2);
+  \draw[brace]      (y1) -- node[near end, below left]   {$S(\tau)$} (y2);
+  \draw[arrow,->]   (f1) -- node[right]{$H(\tau)$} (y1);
+  \draw[arrow,->]   (f2) -- node[right]{$H(\tau)$} (y2);
+  \draw[arrow,->,dashed] (f2) -- ++( 2\dx,-1\dx);
+  \draw[arrow,<-,dashed] (f1) -- ++(-2\dx, 1\dx);
+  % distributions
+  \node(t0) at (5\dx, 5.5\dx) {\rlap{$t$}};
+  \node(t1) at (5\dx,-0.5\dx) {};
+  \draw[plot={infectee}            {\t},domain=0:5] plot ({5\dx+0.5*\dx*\gauss{3}{.23}},{\t});
+  \draw[plot={infector!50!symptoms}{\t},domain=0:5] plot ({5\dx+0.5*\dx*\gauss{2}{.28}},{\t});
+  \draw[plot={infectee!50!symptoms}{\t},domain=0:5] plot ({5\dx+0.5*\dx*\gauss{1}{.36}},{\t});
+  \draw[thick,arrow,->] (t0) -- (t1);
+  \draw[thick] (4.8\dx,4\dx) -- (5.2\dx,4\dx) node{\rlap{$f_i$}};
+\end{tikzpicture}
