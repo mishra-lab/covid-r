@@ -1,45 +1,60 @@
-We have demonstrated how to estimate
+%begin the discussion with 1-2 line summary paragraph [not showing new results]
+
+We have demonstrated how to estimate  %SM: great, this is key message / point #1
 a non-negative generation time distribution
 based on negative serial interval
-and non-negative incubation period distributions.
-Using reported parametric \covid distributions,
+and non-negative incubation period distributions. %reads like we are the first to do this? is the correct, or should we cite in introduction and methods other work?
+We identified that $\Re(t)$ will vary depending on 
+the approach used to either approximate the generation time 
+or estimate generation time. Specifically, if an
+estimated generation time is the benchmark, then
+whether or not we fit the serial interval data to 
+a negative-permitting or non-negative distribution will
+over and underestimate $\Re(t)$ respectively.  %SM: may have reversed the order! [but I think key in summary paragraph is saying sometihng like this as key message / point #2]
+
+\par
+Using reported parametric \covid distributions of incubation period and serial intervals,
 we estimated a Gamma-distributed generation time
-with a mean of $4$ days and
-$95\%$ of transmissions occurring before $10$ days.
-When approximating the generation time distribution
+with a mean of $4$ days and                                     %belongs in results
+$95\%$ of transmissions occurring before $10$ days. %belongs in results
+When approximating the generation time distribution   %belongs in results? or does the 95% of transmission refer to prior literature? I found this sentence confusing and not sure how it fit into the story (especially in the summary paragraph of the discussion section)
 by non-negative serial interval distribution,
 $95\%$ of transmissions are still expected within $10$ days
 \cite{Zhang2020,Nishiura2020},
-but the proportion of pre-symptomatic infections may be underestimated
+but the proportion of pre-symptomatic infections may be underestimated  %underestimated using which method? what is being compared to what in this sentence?
 due to higher mean serial interval versus generation time
 (Figure~\ref{fig:distr-refs}) \cite{Ganyani2020,Tindale2020}.
-\par
+
+\par %SM: reivse this paragraph in full - it is currently a repeat of the results. explain 'why' re: the difference [either here or in results, but at least in one place] and then implications.
 Estimated effective reproduction number $\Re(t)$
 based on the generation time distribution
 was lower than $\Re(t)$ based on
-non-negative serial interval distributions reported in the literature,
+non-negative serial interval distributions reported in the literature,  % already said in results. here - explain (a) why over/under estimate; and (b) the implications of over / under-estimating on tracking the epidemic and forecasting [which these models are also used to do].
 suggesting that the latter may overestimate
 the infection transmission potential.
 By contrast, estimation of $\Re(t)$ using
 negative permitting serial intervals,
 such as that reported by \textcite{Du2020},
 may result in underestimated infection transmission potential.
+
 \par
-Our analysis has three major limitations.
+Our analysis has three notable limitations.  %what does 'analyses' refer to here? the method to estimate generation time? the comparison of methods?
 First, we assumed that
 generation time and incubation period were independent,
-although \textcite{Klinkenberg2011} showed that
-this is false at least in measles.
-Second, we did not leverage line-listed (subject-level) data
-to estimate the generation time distribution,
-such as in \cite{Ganyani2020} and \cite{Klinkenberg2011}.
-Rather, we focused on parametric distributions,
-which could, for example, be obtained by meta-analysis.
+although \textcite{Klinkenberg2011} showed that correlation between the two exist in infections such as measles.  %SM: did the paper actually show this, or did they cite somene else who showed it? i.e. was it their own data that showed the correlation?
+Second, we did not leverage line-listed (subject-level) data  %I do not understand limtiation #2 (tried reading the draft a few times but not clear to me what is being said here -- i think it is because we have not clearly stated what others have done and what we are doing to add to that knowledge)
+to estimate the generation time distribution,                          %the way things are written, we are forcing reviewer/reader to read the key papers we cite - i think have to make it more clear what the others did and exactly what it is we are doing in addition / what is our contribution - explicitly?
+such as in \cite{Ganyani2020} and \cite{Klinkenberg2011}.   %why not [how did they have line-listed data -- was it on serial interval]? what data did we use? make it clear in intro / objectives we are using serial interval data and incubation data from the literature
+Rather, we focused on parametric distributions,                    %why? what was the rationale?
+which could, for example, be obtained by meta-analysis.     %not clear what is being said here ... meta-analyses of?
 Finally, we did not propagate uncertainty in the reported
 serial interval and incubation period distributions
 through our results to obtain confidence intervals for
-the generation time parameterization.
-To model distribution uncertainty,
+the generation time parameterization.                                 %clarify and cite. what is meant by propogation of uncertainty here?
+To model distribution uncertainty,                                         %clarify - what is 'distribution uncertainty'? 
 future work could examine joint estimation of
 the generation time, serial interval, and $\Re(t)$ within
 the same Bayesian framework as described by \cite{Cori2013}.
+
+
+%SM: the 'so what' is not clear (is missing). i think some material in limitations are actually a bit like a 'how to use/how to do'? will most people have line-listed data on serial interval? in the case of this outbreak, that has not been the case with challenges (limited) contact-tracing  for example in the GTA. What do the findings mean for the GTA re: under/over-estimation (paragraph above re: implications).
