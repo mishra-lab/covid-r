@@ -1,14 +1,23 @@
-First, we designed a simple method to  %SM: excellent methods section .. nice flow and terrific work Jesse! clearly you are thinking / thought of the same issues other experienced modelers did too :) but did a very nice job of explaining it
+First, we designed a simple method to
+% SM: excellent methods section .. nice flow and terrific work Jesse!
+%     clearly you are thinking / thought of the same issues other experienced modelers did too :)
+%     but did a very nice job of explaining it
+% JK: Thanks! :D
 recover the generation time distribution
 from parametric definitions of
-the incubation period and the serial interval distributions.  %cite previous work here or better to include in discussion? what do you think?
+the incubation period and serial interval distributions,
+similar to work by \textcite{Kuk2005} and \textcite{Britton2019}.
+% SM: cite previous work here or better to include in discussion? what do you think?
+% JK: I think good to acknowledge here (and not overstate our contributions)
+%     but also discuss more in discussion.
 Then, we applied this method to \covid using
-distributions of XXX reported in the literature.   %distributions of?
+published incubation period and serial interval distributions.
 Finally, we compared $\Re(t)$ estimated for
 the Greater Toronto Area (\gta) region of Canada
-between March 08 and April 15, 2020 using
+between March~08 and April~15, 2020 using
 the estimated generation time distribution versus
-serial interval distributions reported in the literature.  %match this with the objectives statement re: the 3 approaches compared?
+negative permitting and non-negative serial interval distributions
+reported in the literature.
 % ==============================================================================
 \subsection{Estimating the Generation Time Distribution}
 Let $i$ and $i+1$ be the indices of an infector-infectee pair.
@@ -21,7 +30,7 @@ Figure~\ref{fig:nodes} illustrates the variables and distributions graphically.
 We assume all distributions are independent,
 although previous work has shown that
 the generation time and incubation period may be correlated,
-for example in the context of measles \cite{Klinkenberg2011}.
+for example, in the context of measles \cite{Klinkenberg2011}.
 \par
 \begin{figure}
   \centering
@@ -67,6 +76,10 @@ obtained via $\eqref{eq:S}$ using ${\hat{G}(\tau\mid\theta^*)}$.
 It can be shown that such parameters $\theta^*$
 provide the maximum likelihood estimate (\mle) of
 $S(\tau)$ under $\hat{G}(\tau\mid\theta)$.
+In contrast to previous works \cite{Kuk2005,Britton2019,Ganyani2020},
+our approach thus uses parametric definitions of $S(\tau)$ and $H(\tau)$,
+versus individual-level serial interval and/or incubation period data.
+% JK: not sure if this ^ belongs here...
 % ==============================================================================
 \subsection{Application}
 % ------------------------------------------------------------------------------
@@ -117,14 +130,20 @@ as implemented in the \mono{EpiEstim} R package.%
 \footnote{\hreftt{https://cran.r-project.org/web/packages/EpiEstim}}
 \par
 In order to quantify $\Re(t)$ of \covid in \gta, Canada,
-we used reported cases in the region between March 08 and April 15 2020	%SM: using date of report or date of symptom-onset (episode date)? [specify for reproducibility]
+we used reported cases in the region
+with episode dates between March 09 and May 04 2020
 as the incidence time series $I(t)$.%
 \footnote{We did not stratify incidence by
   ``imported'' vs ``local'' transmission events,
-  in order to quantify overall epidemic growth.}  %SM: might want to give reason [i.e. would not influence our comparison - which was the objective here]
+  in order to quantify overall epidemic growth.
+  The relative influence of different $G(\tau)$ approximations on $\Re(t)$
+  should not be affected by this lack of stratification.
+}
 We smoothed $I(t)$ using a Gaussian kernel with $\sigma = 1$ day
 to reflect uncertainty in reporting delay.
-We then compared estimates of $\Re(t)$ using   %SM: Nice! would bring this up in objectives I think as well (see suggestions in intro section) 
+We then compared estimates of $\Re(t)$ using
+% SM: Nice! would bring this up in objectives I think as well (see suggestions in intro section)
+% JK: Done! Thanks :)
 the \mle generation time distribution
 versus serial interval distributions reported in the literature,
 including negative-permitting (Normal \cite{Du2020}),

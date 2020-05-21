@@ -5,6 +5,7 @@
 \setlength{\parindent}{0pt}
 \righthyphenmin=3
 \lefthyphenmin=3
+\setlength{\emergencystretch}{1ex}
 \setlength{\skip\footins}{2em plus 6pt minus 3pt}
 \setlength{\belowcaptionskip}{6pt}
 \setlength{\abovecaptionskip}{6pt}
@@ -29,7 +30,7 @@
 ]{biblatex}
 \addbibresource{refs.bib}
 \renewcommand*{\multicitedelim}{\addcomma\,}
-\renewcommand{\bibfont}{\small}
+\renewcommand{\bibfont}{\footnotesize}
 % commands
 \usepackage{xspace,amsmath}
 \newcommand{\covid}{\mbox{\textsc{covid-19}}\xspace}
@@ -39,13 +40,15 @@
 \newcommand{\deconv}{\mathop{\ast^{-1}}}
 \renewcommand{\Re}{R_e}
 \newcommand{\op}[2]{\mathop{\mathrm{#1}}{\left(#2\right)}}
-\newcommand{\mono}[1]{{\small\texttt{#1}}}
+\newcommand{\mono}[1]{{\texttt{#1}}}
 \newcommand{\hreftt}[1]{\href{#1}{\mono{#1}}}
 \newcommand{\mle}{\textsc{mle}\xspace}
 \newcommand{\sd}{\textsc{sd}\xspace}
-% floats
+\renewcommand{\mid}{\,\vert\,} % blasphemy!
+% results
 \usepackage{graphicx,booktabs}
 \graphicspath{{fig/}}
+\newcommand{\rvalue}[1]{$\input{value/#1}$}
 % tikz
 \usepackage{tikz,xcolor}
 \usetikzlibrary{arrows.meta,decorations.pathreplacing}

@@ -1,60 +1,111 @@
-%begin the discussion with 1-2 line summary paragraph [not showing new results]
-
-We have demonstrated how to estimate  %SM: great, this is a nice key message / point #1
+We have demonstrated how to estimate
+% SM: great, this is a nice key message / point #1
 a non-negative generation time distribution
 based on negative serial interval
-and non-negative incubation period distributions. %reads like we are the first to do this? is the correct, or should we cite in introduction and methods other work?
-We identified that $\Re(t)$ will vary depending on 
-the approach used to either approximate the generation time 
-or estimate generation time. Specifically, if an
-estimated generation time is the benchmark, then
-whether or not we fit the serial interval data to 
-a negative-permitting or non-negative distribution will
-over and underestimate $\Re(t)$ respectively.  %SM: may have reversed the order! [but I think key in summary paragraph is saying sometihng like this as key message / point #2]
-
-\par %SM: in this paragraph, refer to Galyani and how the current study and published study estimates compare and how Ganyani used line-listed etc.?
-Using reported parametric \covid distributions of incubation period and serial intervals,
-we estimated a Gamma-distributed generation time
-with a mean of $4$ days and                                     %belongs in results
-$95\%$ of transmissions occurring before $10$ days. %belongs in results
-When approximating the generation time distribution   %belongs in results? or does the 95% of transmission refer to prior literature? I found this sentence confusing and not sure how it fit into the story (especially in the summary paragraph of the discussion section)
-by non-negative serial interval distribution,
-$95\%$ of transmissions are still expected within $10$ days
-\cite{Zhang2020,Nishiura2020},
-but the proportion of pre-symptomatic infections may be underestimated  %underestimated using which method? what is being compared to what in this sentence?
-due to higher mean serial interval versus generation time
-(Figure~\ref{fig:distr-refs}) \cite{Ganyani2020,Tindale2020}.
-
-\par %SM: reivse this paragraph in full - it is currently a repeat of the results. explain 'why' re: the difference [either here or in results, but at least in one place] and then implications.
-Estimated effective reproduction number $\Re(t)$
-based on the generation time distribution
-was lower than $\Re(t)$ based on
-non-negative serial interval distributions reported in the literature,  % already said in results. here - explain (a) why over/under estimate; and (b) the implications of over / under-estimating on tracking the epidemic and forecasting [which these models are also used to do].
-suggesting that the latter may overestimate
-the infection transmission potential.
-By contrast, estimation of $\Re(t)$ using
-negative permitting serial intervals,
-such as that reported by \textcite{Du2020},
-may result in underestimated infection transmission potential.
-
+and non-negative incubation period parametric distributions.
+% SM: reads like we are the first to do this?
+%     is the correct, or should we cite in introduction and methods other work?
+% JK: AFAIK we are the first to do it with *parametric* inputs
+%     and MLE using KL-divergence.
+%     I have added to the next paragraph to hopefully clarify the differences.
+We showed that estimates of $\Re(t)$ will vary depending on
+the approach used to approximate/estimate the generation time distribution.
+Specifically, relative to the estimated generation time distribution,
+non-negative and negative-permitting serial interval distributions
+may over and underestimate $\Re(t)$, respectively.
+% SM: may have reversed the order!
+%     [but I think key in summary paragraph is saying sometihng like this as key message / point #2]
+% JK: agreed!
 \par
-Our analysis has three notable limitations.  %what does 'analyses' refer to here? the method to estimate generation time? the comparison of methods?
-First, we assumed that
+Our estimated generation time for \covid was
+Gamma-distributed with mean 3.99 and \sd 2.96,
+similar to results by \textcite{Ganyani2020} (Table~\ref{tab:distr}).
+However in \cite{Ganyani2020}
+% as in \cite{Klinkenberg2011} for measles, % JK: feels out of place.
+subject-level serial interval data on infector-infectee pairs
+are required for a joint Bayesian model of
+generation time, incubation period, and serial interval,
+characterized via \textsc{mcmc} sampling.
+In our approach, we used parametric distributions as inputs
+so as to avoid the need for subject-level data,
+and in future, leverage meta-analysis estimates of
+serial interval and incubation period as inputs.
+% JK: some things have moved. you previously wrote:
+% SM: why not [how did they have line-listed data -- was it on serial interval]?
+%     what data did we use? make it clear in intro / objectives
+%     we are using serial interval data and incubation data from the literature
+% JK: does this help clarify?
+\par
+In several recent works \cite{You2020,Tang2020,Zhang2020a,Zhang2020},
+% JK: Not sure if we do/not want to call out specific works;
+%     on one hand we would like to show that it is a common problem,
+%     but on the other, we don't want to be rude.
+non-negative serial interval distributions have been used
+as an approximation of the generation time distribution
+when estimating $\Re(t)$ for \covid.%
+\footnote{In early characterizations of \covid
+  \cite{Li2020,Zhang2020,Nishiura2020,Zhao2020,You2020},
+  negative serial interval (and pre-symptomatic transmission)
+  was either unobserved or considered implausible.}
+% JK: this too -- is it kind enough?
+We found that such an approximation could result in
+overestimation of $\Re(t)$,
+and thus overestimation of \covid transmission potential.
+This conclusion that $\Re(t)$ may be overestimated
+when using (non-negative) serial interval versus generation time
+is opposite the conclusion of \textcite{Britton2019},
+but can be explained as follows.
+In our study of \covid,
+the mean serial interval under non-negative distributions \cite{Zhang2020,Nishiura2020}
+was longer than the mean generation time
+estimated using negative-permitting serial interval \cite{Du2020}.
+If time between infections is assumed to be longer,
+then we would \emph{overestimate} $\Re(t)$ to fit the same incidence.
+By contrast, \textcite{Britton2019} modelled
+both serial interval and generation time as Gamma-distributed (non-negative),
+resulting in equal means, but different variances.
+They then showed how increased variance in the serial interval distribution
+can cause \emph{underestimation} of $\Re(t)$, relative to the generation time distribution.
+In fact, we also find underestimation of $\Re(t)$ when comparing
+negative-permitting serial interval to the generation time distribution.
+\par
+Our approach to estimating generation time had three notable limitations.
+First, like similar works \cite{Kuk2005,Ganyani2020}, we assumed that
 generation time and incubation period were independent,
-although \textcite{Klinkenberg2011} showed that correlation between the two exist in infections such as measles.  %SM: did the paper actually show this, or did they cite somene else who showed it? i.e. was it their own data that showed the correlation?
-Second, we did not leverage line-listed (subject-level) data  %I do not understand limtiation #2 (tried reading the draft a few times but not clear to me what is being said here -- i think it is because we have not clearly stated what others have done and what we are doing to add to that knowledge)
-to estimate the generation time distribution,                          %the way things are written, we are forcing reviewer/reader to read the key papers we cite - i think have to make it more clear what the others did and exactly what it is we are doing in addition / what is our contribution - explicitly?
-such as in \cite{Ganyani2020} and \cite{Klinkenberg2011}.   %why not [how did they have line-listed data -- was it on serial interval]? what data did we use? make it clear in intro / objectives we are using serial interval data and incubation data from the literature
-Rather, we focused on parametric distributions,                    %why? what was the rationale?
-which could, for example, be obtained by meta-analysis.     %not clear what is being said here ... meta-analyses of?
-Finally, we did not propagate uncertainty in the reported
-serial interval and incubation period distributions
-through our results to obtain confidence intervals for
-the generation time parameterization.                                 %clarify and cite. what is meant by propogation of uncertainty here?
-To model distribution uncertainty,                                         %clarify - what is 'distribution uncertainty'? 
-future work could examine joint estimation of
-the generation time, serial interval, and $\Re(t)$ within
-the same Bayesian framework as described by \cite{Cori2013}.
-
-
-%SM: the 'so what' is not clear (is missing). i think some material in limitations are actually a bit like a 'how to use/how to do'? will most people have line-listed data on serial interval? in the case of this outbreak, that has not been the case with challenges (limited) contact-tracing  for example in the GTA. What do the findings mean for the GTA re: under/over-estimation (paragraph above re: implications).
+although \textcite{Klinkenberg2011} showed that
+correlation between the two exist in infections such as measles.
+% SM: did the paper actually show this, or did they cite somene else who showed it?
+%     i.e. was it their own data that showed the correlation?
+% JK: They actually showed it by estimating a correlation coefficient (Table 1)
+%     based on old measles data (not sure if publicly available).
+Second, as noted above, our approach did not use
+subject-level serial interval or incubation period data
+such as in \cite{Ganyani2020} and \cite{Klinkenberg2011},
+possibly resulting in compounding errors from
+parametric approximation of both input (serial interval, incubation period)
+and output (generation time) distributions.
+% SM: I do not understand limtiation #2
+%     (tried reading the draft a few times but not clear to me what is being said here
+%     -- i think it is because we have not clearly stated what others have done
+%     and what we are doing to add to that knowledge)
+% JK: is this better? and hopefully clearer after including
+%     the more detailed descriptions of Ganyani and Britton above?
+However, depending on the availability and reliability of subject-level data,
+our approach could in some cases be favourable.
+Finally, we did not perform uncertainty analysis using
+the reported confidence intervals for
+the serial interval and incubation period distribution parameters.
+Future work could circumvent this limitation by exploring
+joint estimation of the generation time, serial interval, and $\Re(t)$
+within the same Bayesian framework as described by \cite{Cori2013}.
+% SM: the 'so what' is not clear (is missing).
+%     I think some material in limitations are actually a bit like a 'how to use/how to do'?
+%     will most people have line-listed data on serial interval?
+%     in the case of this outbreak, that has not been the case
+%     with challenges (limited) contact-tracing for example in the GTA.
+%     What do the findings mean for the GTA re: under/over-estimation
+%     (paragraph above re: implications).
+% JK: is it better now? hopefully addressed the line-listed data issue.
+%     Re. implications, I think hopefully also clarified,
+%     although I'm not sure about commenting on GTA specifically,
+%     since the results are not very dependent on I(t).

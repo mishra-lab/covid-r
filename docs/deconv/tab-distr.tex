@@ -1,4 +1,4 @@
-\small
+{\small\centering
 \begin{tabular}{rclrlll}
 	\toprule
 	          &         Ref         & Author                    &   $N$ & Distribution                           & Mean   & SD     \\
@@ -22,8 +22,9 @@
 	          & \cite{Ganyani2020}  & \citeauthor{Ganyani2020}  &     * & $\op{Gam}{\alpha=9.140,~\beta=0.569}$  & $5.20$ & $1.72$ \\
 	          & \cite{Ganyani2020}  & \citeauthor{Ganyani2020}  &     * & $\op{Gam}{\alpha=6.843,~\beta=0.577}$  & $3.95$ & $1.51$ \\
 	\bottomrule
-\end{tabular}
-\floatfoot{Notation ---
+\end{tabular}}
+\floatfoot{
+  Notation ---
   $N$: sample size;
   *: indeterminate;
   $S(\tau)$: serial interval;
@@ -33,4 +34,9 @@
   $\sigma$: std dev (\sd);
   $\alpha$: shape;
   $\beta$: scale.
+  Notes ---
+  some parameters were back-calculated based on
+  reported distribution statistics like mean, \sd, and quantiles;
+  $\mathrm{LogN}$ mean and \sd are in linear, not log scale.
+  
 }

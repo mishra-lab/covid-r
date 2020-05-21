@@ -1,58 +1,105 @@
 Figure~\ref{fig:deconv} shows the
 serial interval and incubation period distributions
 from \cite{Du2020} and \cite{Lauer2020} respectively,
-and the generation time distribution estimated via the proposed method.  %SM: figure 2 - in caption, indicate what S-hat refers to, and correct G to G-hat
+and the generation time distribution estimated via the proposed method.
 The \mle parameters of $\hat{G}(\tau\mid\theta)$ were:
 shape ${\alpha = 1.813}$ and scale ${\beta = 2.199}$,
-yielding $\hat{S}(\tau\mid\theta^*)$ that closely approximated
-the target $S(\tau)$.
+yielding $\hat{S}(\tau\mid\theta^*)$
+that reasonably approximated the target $S(\tau)$.
 \par
-Comparison of the estimated generation time to serial interval distributions from the literature 
-showed the following: the mean generation time of $3.99$ was similar to
+Comparing the estimated generation time to published serial interval distributions
+(Figure~\ref{fig:distr-refs}) showed the following.
+The mean generation time of $3.99$ was similar to
 the mean serial interval of $3.96$
 based on the negative-permitting distribution \cite{Du2020},
 but shorter than mean serial interval based on non-negative distributions,
-such as $5.12$ in~\cite{Zhang2020} and $4.7$ in~\cite{Nishiura2020}.  %make it clear that using the same serial interval data for generation time and the fitted serial interval distributions [perhaps in methods?]
-However, the \sd of the generation time distribution was smaller at $2.96$
-than the \sd of the serial interval at $4.75$.   %non-negative fitted?  what about in comparison to the non-negative distributions?
-Overall, estimated mean and \sd generation time
-were similar to those reported by \textcite{Ganyani2020}  %SM: think the comparison is better suited for the discussion. i.e. comparison of the study results with existing literature.
-(Table~\ref{tab:distr}).
+such as $5.12$ in \cite{Zhang2020} and $4.7$ in \cite{Nishiura2020}.
+% SM: make it clear that using the same serial interval data for generation time
+%     and the fitted serial interval distributions [perhaps in methods?]
+% JK: not 100% sure what you mean here?
+%     In estimating G(t) from S(t) and H(t), we always use
+%     the same parametric definition of S(t) from Du2020, in eq (4).
+The \sd of the generation time distribution was smaller at $2.96$
+than the \sd of the negative permitting serial interval at $4.75$ \cite{Du2020},
+but similar to the \sd of the non-negative serial interval distributions,
+including $2.69$ in \cite{Zhang2020} and $2.9$ in \cite{Nishiura2020}.
+% Finally, the distribution 95\% quantile was approximately $10$ days
+% for the generation time distribution and
+% non-negative serial interval distributions \cite{Zhang2020,Nishiura2020},
+% but nearly $12$ days for the
+% negative permitting serial interval distribution \cite{Du2020}.
+% JK: This ^ has possible implications for quarantine,
+%     but it feels out of scope, and I'd be happy to remove it
+%     unless you feel it is important.
 \par
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{deconv}
-  \caption{Recovery of the generation time distribution $G(\tau)$
-    from the serial interval $S(\tau)$
-    and incubation period $H(\tau)$ distributions}
+  \caption{Recovered generation time distribution
+    $\hat{G}(\tau\mid\theta^*)$
+    based on \mle approximation of the serial interval distribution
+    $S(\tau)$ by $\hat{S}(\tau\mid\theta^*)$
+    and the incubation period distribution $H(\tau)$.}
   \label{fig:deconv}
 \end{figure}
 \par
-Figure~\ref{fig:Re(t)} shows  %SM: can we zoom-in to the later dates? to show the differences more clearly after April 10 for example?
+Figure~\ref{fig:Re} shows
+% SM: can we zoom-in to the later dates?
+%     to show the differences more clearly after April 10 for example?
+% JK: I've added in the appendix and referenced from here
+%     but let me know if you think it should also appear in the main text.
 $\Re(t)$ for \covid in \gta, Canada
 based on reported cases and estimated using
 the generation time distribution versus
 selected serial interval distributions reported in the literature.%
 \footnote{Generation time and serial interval distributions
   are also illustrated in Figure~\ref{fig:distr-refs}.}
-The $\Re(t)$ using the estimated generation time distribution
-was lower (%SM - values using an early date and a later date)
-compared to $\Re(t)$ based on non-negative serial interval distributions (%SM - values using an early date and a later date).  
-%SM: currently the reason for this is not discussed. Could put in discussion but I think would be good to explain the 'why' here. 
-The $\Re(t)$ estimated using
-a negative-permitting serial interval distribution was the smallest of all three approaches %%SM - values here) 
-%SM: given reason/explain 'why' here. 
+The $\Re(t)$ based on non-negative serial interval distribution was higher
+versus $\Re(t)$ using the estimated generation time distribution
+(e.g.\ using \cite{Zhang2020}:\
+\rvalue{R-2020-03-16-S(t)-[NN]-Zhang-2020} vs
+\rvalue{R-2020-03-16-G(t)-[this]} on March~16; and
+\rvalue{R-2020-04-13-S(t)-[NN]-Zhang-2020} vs
+\rvalue{R-2020-04-13-G(t)-[this]} on April~13).
+% SM: values using an early date and a later date
+% JK: I definitely agree the values are helpful, but not sure if we need 2 dates?
+%     just don't want to overwhelm the big-picture trend with numbers...
+%     Similarly, I originally had the 95% CI but it felt cluttered...
+% SM: currently the reason for this is not discussed.
+%     Could put in discussion but I think would be good to explain the 'why' here.
+% JK: How is this? :)
+Higher $\Re(t)$ can be attributed to
+longer mean serial interval under non-negative distributions
+versus the estimated mean generation time,
+since inferred $\Re(t)$ must be higher
+to compensate for longer delay between infections.
+By contrast, the $\Re(t)$ estimated using
+a negative-permitting serial interval distribution
+was the smallest of all three approaches
+(e.g.\ using \cite{Du2020}:\
+\rvalue{R-2020-03-16-S(t)-[NP]-Du-2020} on March~16; and
+\rvalue{R-2020-04-13-S(t)-[NP]-Du-2020} on April~13).
+% SM: given reason/explain 'why' here.
+% JK: is this sufficient? It could get very mathy to fully explain,
+%     and Britton et al really do examine exactly this.
+In this case, lower $\Re(t)$ can be attributed to
+increased variance in the negative-permitting serial interval distribution
+versus in the generation time distribution,
+as shown by \textcite{Britton2019},
+but beyond our scope here.
 \par
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{Re}
   \caption{$\Re(t)$ of \covid in \gta using
     serial interval versus generation time}
-  \label{fig:Re(t)}
+  \label{fig:Re}
   \floatfoot{Notation ---
     $S(\tau)$:~serial interval;
     $G(\tau)$:~generation time;
     [NP]:~negative-permitting;
     [NN]:~non-negative.
+    See Figure~\ref{fig:Re-zoom}
+    for zoom-in of later dates.
   }
 \end{figure}
