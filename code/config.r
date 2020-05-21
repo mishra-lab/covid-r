@@ -28,13 +28,15 @@ source.env = function(root=path.code,...){
 config.save = FALSE
 save.fig = function(fname,ext='.pdf',width=6,height=4,...) {
   if (config.save) {
-    ggsave(file.path(path.fig,paste0(fname,ext)),width=width,height=height,...)
+    ffname = file.path(path.fig,paste0(fname.clean(fname),ext))
+    ggsave(ffname,width=width,height=height,...)
   }
 }
-save.value = function(fname,value,rnd=3){
+save.value = function(fname,value,ext='',rnd=3){
   if (config.save) {
     s = sprintf(paste0('%.',rnd,'f'),value)
-    sink(file.path(path.value,fname))
+    ffname = file.path(path.value,paste0(fname.clean(fname),ext))
+    sink(ffname)
     cat(s)
     sink(NULL)
   }

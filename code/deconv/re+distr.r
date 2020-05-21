@@ -11,8 +11,9 @@ refs = list(
   'S(t) [NP] Du 2020'       = list(param='ser-int', which='master'),
   'S(t) [NN] Zhang 2020'    = list(param='ser-int', which='Zhang2020'),
   'S(t) [NN] Nishiura 2020' = list(param='ser-int', which='Nishiura2020'),
-  'G(t): [this]'            = list(param='gen-time',which='master')
+  'G(t) [this]'             = list(param='gen-time',which='master')
 )
+R.dates = c('2020-03-16','2020-04-13')
 
 t = seq(-60,60,0.1)
 distr = data.frame(t=t)
@@ -22,7 +23,7 @@ R.fun = function(param,which){
     t.tau       = 11,
     case.smooth = 1,
     t.start     = as.date('2020-02-25'),
-    t.end       = as.date('2020-05-01'),
+    t.end       = as.date('2020-05-15'),
     gen.time    = list(param=param, which=which)
   ))
 }
@@ -34,11 +35,17 @@ distr.fun = function(param,which){
 for (name in names(refs)){
   distr [[name]] = do.call(distr.fun,refs[[name]])
   R.objs[[name]] = do.call(R.fun,    refs[[name]])
+  for (R.date in R.dates){
+    save.value(paste('R',R.date,name),get.R.value(R.objs[[name]],date=R.date),rnd=2)
+  }
 }
 # plot R
-plot.R(R.objs,vs='Source',ylim=c(0,4),xlim=c('2020-03-08','2020-04-15')) +
+plot.R(R.objs,vs='Source',ylim=c(0,3.5),xlim=c('2020-03-09','2020-05-04')) +
   theme(legend.text.align=0,legend.position=c(.99,.99),legend.justification=c(1,1))
 save.fig('.tmp/deconv/Re',width=5,height=4)
+plot.R(R.objs,vs='Source',ylim=c(0.5,1.5),xlim=c('2020-03-30','2020-05-04')) +
+  theme(legend.text.align=0,legend.position=c(.01,.01),legend.justification=c(0,0))
+save.fig('.tmp/deconv/Re-zoom',width=5,height=4)
 # plot distr
 D = melt(distr,id.vars='t',variable.name='Source',value.name='Probability')
 ggplot(data=D, aes(x=t,y=Probability,color=Source)) +

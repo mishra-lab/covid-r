@@ -5,6 +5,9 @@ ggcolor = function(n){
 file.ext = function(fname){
   return(tail(strsplit(fname,'\\.')[[1]],1))
 }
+fname.clean = function(fname){
+  return(gsub(' ','-',fname))
+}
 load.data = function(fname){
   return(list(
     xlsx = function(fname){ data.frame(read_excel(fname)) },

@@ -15,7 +15,7 @@ get.config = function(
   case.travel      = 'local',       # 'local', 'imported', 'exclude'
   case.main        = 'local',       # 'local', 'imported', 'exclude'
   case.ltc         = 'local',       # 'local', 'imported', 'exclude'
-  case.adj         = 'overall',     # FALSE, 'overall', 'age'
+  case.adj         = FALSE,         # FALSE, 'overall', 'age'
   import.frac      = 1,             # fraction of import with local contact
   unkn.import.frac = 0,             # fraction of local with unknown import contact
   case.smooth      = 1,             # sd of gaussian smoothing kernel
@@ -77,6 +77,10 @@ merge.R = function(R.objs){
   R$R[['Quantile.0.95(R)']]  = qgamma(.950, shape=shape, scale=scale)
   R$R[['Quantile.0.975(R)']] = qgamma(.975, shape=shape, scale=scale)
   return(R)
+}
+get.R.value = function(R.obj,date,col='Mean(R)'){
+  row = R.obj$R$t_end==which(R.obj$dates==date)
+  return(R.obj$R[row,col])
 }
 # report censoring
 censor.map = list(
