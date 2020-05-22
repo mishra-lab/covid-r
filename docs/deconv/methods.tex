@@ -1,15 +1,8 @@
 First, we designed a simple method to
-% SM: excellent methods section .. nice flow and terrific work Jesse!
-%     clearly you are thinking / thought of the same issues other experienced modelers did too :)
-%     but did a very nice job of explaining it
-% JK: Thanks! :D
 recover the generation time distribution
 from parametric definitions of
 the incubation period and serial interval distributions,
 similar to work by \textcite{Kuk2005} and \textcite{Britton2019}.
-% SM: cite previous work here or better to include in discussion? what do you think?
-% JK: I think good to acknowledge here (and not overstate our contributions)  SM: i like the revisions
-%     but also discuss more in discussion.
 Then, we applied this method to \covid using
 published incubation period and serial interval distributions.
 Finally, we compared $\Re(t)$ estimated for
@@ -51,7 +44,7 @@ Rearranging, we have:
 $s_i = g_i + h_{i+1} - h_i$.
 The probability distribution of
 the sum of independent random variables
-is the convolution of their respective distributions~\cite{Hogg2005},  %SM: good citation and explanation
+is the convolution of their respective distributions~\cite{Hogg2005},
 where convolution $\conv$ is defined as:
 \begin{equation}\label{eq:conv}
   \left[H \conv F\right](\tau) = \int_{-\infty}^{+\infty} H(z) F(\tau - z) \,dz
@@ -76,10 +69,6 @@ obtained via $\eqref{eq:S}$ using ${\hat{G}(\tau\mid\theta^*)}$.
 It can be shown that such parameters $\theta^*$
 provide the maximum likelihood estimate (\mle) of
 $S(\tau)$ under $\hat{G}(\tau\mid\theta)$.
-In contrast to previous works \cite{Kuk2005,Britton2019,Ganyani2020},
-our approach thus uses parametric definitions of $S(\tau)$ and $H(\tau)$,
-versus individual-level serial interval and/or incubation period data.
-% JK: not sure if this ^ belongs here... SM: agree, move to Discussion but state like that/as worded
 % ==============================================================================
 \subsection{Application}
 % ------------------------------------------------------------------------------
@@ -140,10 +129,8 @@ as the incidence time series $I(t)$.%
   should not be affected by this lack of stratification.
 }
 We smoothed $I(t)$ using a Gaussian kernel with $\sigma = 1$ day
-to reflect uncertainty in reporting delay.  %SM: nice i like this. 
+to reflect uncertainty in reporting delay.
 We then compared estimates of $\Re(t)$ using
-% SM: Nice! would bring this up in objectives I think as well (see suggestions in intro section)
-% JK: Done! Thanks :)
 the \mle generation time distribution
 versus serial interval distributions reported in the literature,
 including negative-permitting (Normal \cite{Du2020}),

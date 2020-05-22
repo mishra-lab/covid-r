@@ -22,12 +22,6 @@ This approximation is reasonable for infectious diseases
 where onset of infectiousness and symptoms
 is effectively simultaneous \cite{Cori2013}
 such for SARS and Ebola \cite{Zeng2009,Osterholm2015}.
-% SM: cite the use of serial interval for SARS and Ebola models (e.g. renewal equation)
-%     https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5871640/
-% JK: I was thinking maybe we could cite papers that
-%     describe simultaneous onset of infectiousness and symptoms here?  SM: good idea
-%     Or can re-cite the papers from above about R(t) with serial interval:
-%     Ali2013 (H1N1), Aylward2014 (Ebola), Cori2013 (SARS,influenza,measles,smallpox)
 However, potential pre-symptomatic transmission of \covid
 \cite{Kimball2020,Du2020}
 renders approximation of generation time by serial interval problematic.
@@ -35,20 +29,11 @@ Namely, while generation time is strictly positive,
 the serial interval can be negative,
 such as in 59 of 468 (12.6\%) reported cases in~\cite{Du2020},
 due to variability in the incubation period.
-% SM: clarify the sentence (could not follow / understand the sentence).
-%     use simpler words :). E.g. one solution has been to
-%     fit a non-negative distribution to serial interval data when calculating Re(t),
-%     which has been shown to produce different estimates of Re(t)
-%     from models which used the serial interval data as they were.
-% JK: Aha, I really tried! is this more clear? SM: yes great!
 As a result, \covid serial interval data have been used to fit both
 non-negative and negative-permitting distributions,
 yielding different estimates of $\Re(t)$
 \cite{Du2020,Zhang2020,Ganyani2020}.
 \par
-% SM: do not fully understand the objectives as currently worded
-%     - can we simplify/clarify?
-% JK: of course -- I like what you wrote. How's this SM: that's clear thanks!
 We compared estimates of $\Re(t)$ and their implications using
 each of the following approximations of the generation time distribution:
 (a) negative-permitting distribution fit to serial interval data;
