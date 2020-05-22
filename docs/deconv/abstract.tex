@@ -1,17 +1,18 @@
 \textsc{Background}.
 The effective reproductive number $\Re(t)$
-is an useful measure of epidemic severity
-that can be calculated in near real time
+is critical measure of epidemic potential.
+$\Re(t)$ can be calculated in near real time
 using an incidence time series and the generation time distribution---%
 the time between infection events in an infector-infectee pair.
 In calculating $\Re(t)$, the generation time distribution
 is often approximated by the serial interval distribution---%
 the time between symptom onset in an infector-infectee pair.
-However, such an approximation can be problematic,
-particularly when serial interval can be negative, such as in \covid.
+However, such an approximation may lead to
+negative values of the serial interval when transmission can 
+occur prior to symptoms, such as in \covid.
 \textsc{Methods}.
 We developed a method to infer the generation time distribution
-from parametric definitions of
+from parametric definitions of, and using empirical data on,
 the serial interval and incubation period distributions.
 We then compared estimates of $\Re(t)$ for \covid in
 the Greater Toronto Area of Canada using:\
@@ -30,3 +31,4 @@ Approximation of the generation time distribution of \covid
 with non-negative or negative-permitting serial interval distributions
 when calculating $\Re(t)$ may result in over or underestimation of
 transmission potential, respectively.
+%SM: nice abstract!
