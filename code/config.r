@@ -6,6 +6,7 @@ options(width=200,keep.source=TRUE)
 path.root  = strsplit(getwd(),file.path('code'))
 path.fig   = file.path(path.root,'out','fig')
 path.value = file.path(path.root,'out','value')
+path.table = file.path(path.root,'out','table')
 path.data  = file.path(path.root,'data')
 path.distr = file.path(path.root,'data','public','distr')
 path.code  = file.path(path.root,'code')
@@ -39,5 +40,11 @@ save.value = function(fname,value,ext='',rnd=3){
     sink(ffname)
     cat(s)
     sink(NULL)
+  }
+}
+save.csv = function(fname,df,row.names=FALSE,...){
+  if (config.save) {
+    ffname = file.path(path.table,paste0(fname.clean(fname),'.csv'))
+    write.csv(df,ffname,row.names=row.names,...)
   }
 }

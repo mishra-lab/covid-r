@@ -38,6 +38,9 @@ for (name in names(refs)){
   for (R.date in R.dates){
     save.value(paste('R',R.date,name),get.R.value(R.objs[[name]],date=R.date),rnd=2)
   }
+  R.df = R.objs[[name]]$R
+  R.df$dates = R.objs[[name]]$dates[R.df$t_end]
+  save.csv(paste('R',name),R.df)
 }
 # plot R
 plot.R(R.objs,vs='Source',ylim=c(0,3.5),xlim=c('2020-03-09','2020-05-04')) +
