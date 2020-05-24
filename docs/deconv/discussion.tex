@@ -57,33 +57,6 @@ First, like similar works \cite{Kuk2005,Ganyani2020}, we assumed that
 generation time and incubation period were independent,
 although \textcite{Klinkenberg2011} showed that
 correlation between the two exist in infections such as measles.
-If generation time and incubation period are in fact correlated, %SM: agree with not putting it in there for now.
-then failure to consider such correlation would result in
-underestimation of the variance in generation time,%
-\footnote{If we assume that only
-  time to transmission ($g_i$) and symptom onset in the infector ($h_i$)
-  are significantly correlated,
-  then the expected variance of the serial interval $s_i$ is:
-  \begin{align*}
-  \op{Var}{s_i}
-  &= \op{Var}{g_i + h_{i+1} - h_i}\\
-  &= \op{Var}{g_i} + \op{Var}{h_{i+1}} + \op{Var}{h_i}
-     - 2 \op{Cov}{g_i,h_i}
-  \end{align*}
-  Thus, by ignoring $\op{Cov}{g_i,h_i}$ during inference on $g_i \sim G(\tau)$,
-  we underestimate the variance of $G(\tau)$ by an additive factor of $2 \op{Cov}{g_i,h_i}$.
-  The mean of $G(\tau)$ would not be affected.}
-and therefore overestimation of $\Re(t)$
-(per \cite{Britton2019} in the previous paragraph).
-% SM: give a 1-line about how correlation may effect the findings.
-%     "If there is correlation between generation time and incubation period with COVID-19, then..."
-% JK: Unfortunately, the authors did not compare their model with correlation
-%     to a model without, so they didn't answer this question directly.
-%     In fact, it's quite complicated (see footnote/equation above).
-%     I tried to wrap my head around it, but it was definitely some logical gymnastics...
-%     I also considered moving this all to an appendix,
-%     but to do a proper treatment, it could really become a can of worms.  %SM: thanks for looking into this!! agree - lets leave it out for now (go back to what you had before), and if reviewer asks, we can re-asses at that time re: putting this into the appendix. what do you think?  I feel like it might be out of scope and belongs in results if we go into it?
-%     Let me know what you think!
 Second, as noted above, our approach did not use
 person-level serial interval or incubation period data
 such as in \cite{Ganyani2020} and \cite{Klinkenberg2011},
