@@ -7,12 +7,20 @@ the time between infection events in an infector-infectee pair.
 In calculating $\Re(t)$, the generation time distribution
 is often approximated by the serial interval distribution---%
 the time between symptom onset in an infector-infectee pair.
-However, such an approximation may lead to
-negative values of the serial interval when transmission can 
-occur prior to symptoms, such as in \covid.
+However, while generation time must be positive by definition,
+serial interval can be negative if transmission can occur before symptoms,
+such as in \covid, rendering such an approximation improper in some contexts.
+% JK: I think it's not the approximation that leads to negative values,
+%     More that the negative values in S.I. are invalid for a G.T. distribution.
+%     Also, I wanted to end background with a "problem statement",
+%     hence "rendering such an approximation improper in some contexts",
+%     but if there's a better way to say that I'm open!
 \textsc{Methods}.
 We developed a method to infer the generation time distribution
 from parametric definitions of, and using empirical data on,
+% JK: can you clarify what empirical data means in this case?
+%     If line-listed / person-level data, our method doesn't really use that,
+%     so I would kind of prefer to stick with just parametric definitions.
 the serial interval and incubation period distributions.
 We then compared estimates of $\Re(t)$ for \covid in
 the Greater Toronto Area of Canada using:\
@@ -31,4 +39,3 @@ Approximation of the generation time distribution of \covid
 with non-negative or negative-permitting serial interval distributions
 when calculating $\Re(t)$ may result in over or underestimation of
 transmission potential, respectively.
-%SM: nice abstract!
