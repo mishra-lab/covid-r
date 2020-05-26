@@ -10,8 +10,8 @@ may over and underestimate $\Re(t)$, respectively.
 \par
 Our estimated generation time for \covid was
 Gamma-distributed with mean 3.99 and \sd 2.96,
-similar to results by \textcite{Ganyani2020} (Table~\ref{tab:distr}).
-However in \cite{Ganyani2020}
+similar to results by \citet{Ganyani2020} (Table~\ref{tab:distr}).
+However in \citep{Ganyani2020}
 person-level serial interval data on infector-infectee pairs
 are required for a joint Bayesian model of
 generation time, incubation period, and serial interval,
@@ -22,12 +22,12 @@ person-level and paired data.
 As such, our approach could also use pooled estimates via meta-analyses of
 serial interval and incubation period as parameter inputs.
 \par
-In several recent works \cite{You2020,Tang2020,Zhang2020a,Zhang2020},
+In several recent works \citep{You2020,Tang2020,Zhang2020,Zhang2020a},
 non-negative serial interval distributions have been used
 as an approximation of the generation time distribution
 when estimating $\Re(t)$ for \covid.%
 \footnote{In early characterizations of \covid
-  \cite{Li2020,Zhang2020,Nishiura2020,Zhao2020,You2020},
+  \citep{Li2020,Zhang2020,Nishiura2020,Zhao2020,You2020},
   negative serial interval (and pre-symptomatic transmission)
   was either unobserved or considered implausible.}
 We found that such an approximation may result in
@@ -35,15 +35,15 @@ overestimation of $\Re(t)$,
 and thus overestimation of \covid transmission potential.
 The finding that $\Re(t)$ may be overestimated
 when using (non-negative) serial interval versus generation time
-seemingly contradicts the conclusion of \textcite{Britton2019},
+seemingly contradicts the conclusion of \citet{Britton2019},
 but can be explained as follows.
 In our study of \covid,
-the mean serial interval under non-negative distributions \cite{Zhang2020,Nishiura2020}
+the mean serial interval under non-negative distributions \citep{Zhang2020,Nishiura2020}
 was longer than the mean generation time
-estimated using negative-permitting serial interval \cite{Du2020}.
+estimated using negative-permitting serial interval \citep{Du2020}.
 If time between infections is assumed to be longer,
 then we would \emph{overestimate} $\Re(t)$ to fit the same incidence.
-By contrast, \textcite{Britton2019} modelled
+By contrast, \citet{Britton2019} modelled
 both serial interval and generation time as Gamma-distributed (non-negative),
 resulting in equal means, but different variances.
 They then showed how increased variance in the serial interval distribution
@@ -53,13 +53,13 @@ negative-permitting serial interval to the generation time distribution,
 which had equal means.
 \par
 Our approach to estimating generation time had three notable limitations.
-First, like similar works \cite{Kuk2005,Ganyani2020}, we assumed that
+First, like similar works \citep{Kuk2005,Ganyani2020}, we assumed that
 generation time and incubation period were independent,
-although \textcite{Klinkenberg2011} showed that
+although \citet{Klinkenberg2011} showed that
 correlation between the two exist in infections such as measles.
 Second, as noted above, our approach did not use
 person-level serial interval or incubation period data
-such as in \cite{Ganyani2020} and \cite{Klinkenberg2011},
+such as in \citep{Ganyani2020} and \citep{Klinkenberg2011},
 possibly resulting in compounding errors from
 parametric approximation of both input (serial interval, incubation period)
 and output (generation time) distributions.
@@ -70,4 +70,4 @@ the reported confidence intervals for
 the serial interval and incubation period distribution parameters.
 Future work could overcome this limitation by exploring
 joint estimation of generation time, serial interval, and $\Re(t)$
-within the Bayesian framework defined in \cite{Cori2013}.
+within the Bayesian framework defined in \citep{Cori2013}.
