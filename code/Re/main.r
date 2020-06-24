@@ -24,6 +24,15 @@ plot.R(vs='LTC Cases',list(
 ))
 save.fig('iphis-R-by-reported-compare-ltc')
 
+plot.R(vs='Region',list(
+  Toronto = estimate.R(region='Toronto'),
+  Halton  = estimate.R(region='Halton'),
+  Durham  = estimate.R(region='Durham'),
+  Peel    = estimate.R(region='Peel'),
+  York    = estimate.R(region='York')
+))
+save.fig('iphis-R-by-reported-compare-region')
+
 plot.cases(vs='Source',list(
   All    = estimate.R(case.main='local',   case.travel='local',   case.ltc='local'   ),
   Other  = estimate.R(case.main='local',   case.travel='exclude' ,case.ltc='exclude' ),
