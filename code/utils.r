@@ -10,15 +10,22 @@ fname.clean = function(fname){
 }
 load.data = function(fname){
   return(list(
-    xlsx = function(fname){ data.frame(read_excel(fname)) },
     csv  = function(fname){ read.csv(fname) },
+    xlsx = function(fname){ data.frame(read_excel(fname)) },
     json = function(fname){ fromJSON(file=fname) }
   )[[file.ext(fname)]](fname))
+}
+save.data = function(data,fname){
+  list(
+    csv  = function(data,fname){ write.csv(data,fname,row.names=FALSE) }
+    # xlsx = function(data,fname){ write.xlsx(data,fname) }
+    # json = function(data,fname){ toJSON(data,file=fname) }
+  )[[file.ext(fname)]](data, fname)
 }
 as.date = function(dates,format='%Y-%m-%d'){
   return(as.Date(
     dates,
-    format='%Y-%m-%d',
+    format=format,
     origin='1970-01-01'
   ))
 }

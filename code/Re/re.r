@@ -1,31 +1,31 @@
 # estimate R based on count data
 library('EpiEstim')
 library('questionr')
+# the main config options that get passed around
 get.config = function(
-  t.tau            = round(q(covid.19.distr('gen-time'))(0.9)),
-  t.start          = as.date('2020-02-25'),
-  t.end            = as.date('2020-05-01'),
-  t.censor         = NULL,          # censor
-  gen.time         = NULL,          # generation time source
-  data.name        = 'moh',         # 'moh','olis','iphis'
-  region           = 'GTA',         # 'GTA'
-  data.source      = 'iphis',       # 'iphis','olis'
-  case.date        = 'episode',     # 'episode', 'report'
-  case.def         = 'report',      # 'death', 'report'
-  case.travel      = 'local',       # 'local', 'imported', 'exclude'
-  case.main        = 'local',       # 'local', 'imported', 'exclude'
-  case.ltc         = 'local',       # 'local', 'imported', 'exclude'
-  case.adj         = FALSE,         # FALSE, 'overall', 'age'
-  import.frac      = 1,             # fraction of import with local contact
-  unkn.import.frac = 0,             # fraction of local with unknown import contact
-  case.smooth      = 1,             # sd of gaussian smoothing kernel
-  case.sample      = FALSE          # number of sample iterations
+  t.tau       = 3,           # Re sliding window (days); larger = more smooth but more delay
+  t.censor    = 3,           # assumed reporting delay (days); remove last X days
+  t.start     = as.date('2020-02-25'), # first R at t.start + t.tau + 1; first case at t.start
+  t.end       = as.date('2020-06-20'), # last R at t.end - t.sensor; last case at t.end - t.censor
+  gen.time    = NULL,        # generation time parameterization (default is master)
+  region      = 'GTA',       # 'GTA'
+  data.source = 'iphis',     # 'iphis' only for now
+  case.date   = 'episode',   # 'episode', 'report'
+  case.def    = 'report',    # what is a case: 'report', 'death'
+  case.travel = 'local',     # how to treat travel cases: 'local', 'imported', 'exclude'
+  case.ltc    = 'local',     # how to treat LTC cases:    'local', 'imported', 'exclude'
+  case.main   = 'local',     # hot to treat other cases:  'local', 'imported', 'exclude'
+  case.adj    = FALSE,       # infer cases by deaths based on IFR: FALSE, 'overall', 'age'
+  import.frac = 1,           # what proportion of imported cases can actually infect locally
+  unkn.import.frac = 0,      # attribute a proportion of local cases to import without flag
+  case.smooth = 1,           # SD of smoothing kernel for incidence (days)
+  case.sample = FALSE        # number of repeated Re(t) estimations if randomly sampling anything
 ){
   config = as.list(environment())
   if (is.null(gen.time)){ config$gen.time = list(param='gen-time',which='master') }
-  if (is.null(t.censor)) { config$t.censor = censor.map[[config$case.def]] } 
   return(config)
 }
+# the config options that estimate_R actually uses
 get.re.config = function(config){
   nt = length(get.dates(config))
   G  = do.call(covid.19.distr,config$gen.time)
@@ -39,11 +39,13 @@ get.re.config = function(config){
     std_si  = sd(G)
   ))
 }
+# gene
 get.dates = function(config){
   return(seq(config$t.start, config$t.end-config$t.censor, 1))
 }
 estimate.R = function(config,...){
   if (missing(config)){ config = get.config(...) }
+  # TODO: ... only works if config is not given
   dates = get.dates(config)
   R.objs = list()
   for (s in 1:max(1,config$case.sample)){
@@ -76,14 +78,12 @@ merge.R = function(R.objs){
   R$R[['Quantile.0.75(R)']]  = qgamma(.750, shape=shape, scale=scale)
   R$R[['Quantile.0.95(R)']]  = qgamma(.950, shape=shape, scale=scale)
   R$R[['Quantile.0.975(R)']] = qgamma(.975, shape=shape, scale=scale)
+  # WARNING: this may not actually represent uncertainty accurately
+  #          since we re-estimate a different gamma distribution
+  #          but the true uncertainty distribution likely has fatter tails.
   return(R)
 }
 get.R.value = function(R.obj,date,col='Mean(R)'){
   row = R.obj$R$t_end==which(R.obj$dates==date)
   return(R.obj$R[row,col])
 }
-# report censoring
-censor.map = list(
-  report = 3, # assumed
-  death  = round(q(covid.19.distr('sym-death'))(.9)) # X % of deaths
-)

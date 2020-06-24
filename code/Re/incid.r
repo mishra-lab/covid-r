@@ -1,3 +1,4 @@
+# smooth incidence timeseries with a gaussian kernel
 smooth.incid = function(config,incid){
   if (config$case.smooth){
     return(conv(incid, gauss.kernel(config$case.smooth)))
@@ -5,12 +6,15 @@ smooth.incid = function(config,incid){
     return(incid)
   }
 }
+# weights to infer number of cases based on deaths, using IFR = infection fatality ratio
+# either overall or by age group
+# WARNING: this has not been validated, and there are issues with overestimated precision
 get.ifr.weights = function(config,data){
   # weight functions: point estimate or random sampling
   cap = function(wt){ min(wt, 100) }
   wt.fun = ifelse(config$case.sample > 1,
     function(ref,cm){ cap( ref / runif(1, cm$low, cm$high) ) },
-    function(ref,cm){ cap( ref / cm$mean) }
+    function(ref,cm){ cap( ref / cm$mean ) }
   )
   # weight maps based on infection fatality ratio
   ifr = distr.json('ifr')
@@ -33,11 +37,6 @@ get.case.weights = function(config,data){
   # TODO: adjustment for reported cases
   return(weights)
 }
-load.cum.distr = function(dates){
-  fname = file.path(path.data,'private','on-cum-distr.csv')
-  data = load.data(fname)
-  return(data[as.numeric(as.date(data$date)) %in% as.numeric(dates),])
-}
 get.case.select = function(config,data,context){
   select = as.logical(rep(1,nrow(data)))
   select = select & (data$region %in% region.map[[config$region]])
@@ -46,26 +45,14 @@ get.case.select = function(config,data,context){
   }
   return(select)
 }
-cum.adjust = function(cases,adjust){
-  return(c(cases[1],diff(adjust*cumsum(cases))))
-}
-get.cases = function(config,dates,distr,data,src){
+get.cases = function(config,dates,data,src){
   select = get.case.select(config,data,src)
   adjust = rep(1,length(dates))
   for (what in c('travel','ltc')){
-    if (data.info[[what]]){             # if flag available: select lines
-      if (src == what){
-        select = select &  data[[what]] # include matches
-      } else {
-        select = select & !data[[what]] # exclude matches
-      }
-    } else {                            # flag not available: adjust counts
-      if (src == what){
-        adjust = distr[[what]]          # only proportion
-      }
-      if (src == 'main'){
-        adjust = adjust - distr[[what]] # remove proportion
-      }
+    if (src == what){
+      select = select &  data[[what]] # include matches
+    } else {
+      select = select & !data[[what]] # exclude matches
     }
   }
   weights = get.case.weights(config,data)
@@ -73,16 +60,14 @@ get.cases = function(config,dates,distr,data,src){
     x = factor(as.numeric(data$dates[select]), levels=as.numeric(dates)),
     weights = weights[select]
   ))
-  cases = cum.adjust(cases,adjust)
   return(cases)
 }
 get.incid = function(config,dates){
   data = load.case.data(config)
-  distr = load.cum.distr(dates)
   cases = list(
-    travel = get.cases(config,dates,distr,data,'travel'),
-    main   = get.cases(config,dates,distr,data,'main'),
-    ltc    = get.cases(config,dates,distr,data,'ltc')
+    travel = get.cases(config,dates,data,'travel'),
+    main   = get.cases(config,dates,data,'main'),
+    ltc    = get.cases(config,dates,data,'ltc')
   )
   combine.cases = function(context){
     return(smooth.incid(config,

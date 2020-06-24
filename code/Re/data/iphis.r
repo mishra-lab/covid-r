@@ -1,7 +1,3 @@
-data.info = list(
-  travel = TRUE,
-  ltc    = FALSE
-)
 # data cleaning
 get.case.region = function(data.raw){
   region.clean = list(
@@ -12,33 +8,46 @@ get.case.region = function(data.raw){
     'YORK REGION (2270)'   = 'York'
   )
   map.fun = function(original){
-    region = region.clean[[original]]
+    region = region.clean[[as.character(original)]]
     return(ifelse(is.null(region),NA,region))
   }
-  return(unlist(lapply(data.raw$Diagnosing_Health_Unit_Area_Desc,map.fun)))
+  return(unlist(lapply(data.raw$DIAGNOSING_HEALTH_UNIT_AREA,map.fun)))
 }
 get.case.date = function(config,data.raw){
+  fmt = '%d%b%Y:%H:%M:%S'
   if (config$case.date == 'episode'){
-    return(as.date(data.raw$Accurate_Episode_Date))
+    return(as.date(data.raw$ACCURATE_EPISODE_DATE,format=fmt))
   }
   if (config$case.date == 'report'){
-    return(as.date(data.raw$Case_Reported_Date))
+    return(as.date(data.raw$CASE_REPORTED_DATE,format=fmt))
   }
 }
-
+get.case.death = function(data.raw){
+  return(data.raw$CLIENT_DEATH_DATE != '')
+}
+get.case.travel = function(data.raw){
+  return(data.raw$CASE_ACQUISITIONINFO == 'Travel-Related')
+}
+get.case.ltc = function(data.raw){
+  return(data.raw$LTCH_RESIDENT == 'Yes' | data.raw$LTCH_HCW == 'Yes')
+}
+get.case.age = function(data.raw){
+  return(data.raw$age_grp)
+}
 load.case.data = function(config){
-  fname = file.path(path.data,'private','ON_LineListforMOH_UofT.xlsx')
+  # fname = file.path(path.data,'private','ON_LineListforMOH_UofT.xlsx')
+  fname = file.path(path.data,'private','IPHIS_REPORT_MIN.csv')
   data.raw = load.data(fname)
   return(data.frame(
-    # TODO: add back date type
+    region = get.case.region(data.raw),
     dates  = get.case.date(config,data.raw),
-    travel = data.raw$Case_AcquisitionInfo == 'Travel-Related',
-    age    = data.raw$Age_At_Time_of_Illness,
-    death  = !is.na(data.raw$Client_Death_date),
-    region = get.case.region(data.raw)
+    death  = get.case.death(data.raw),
+    travel = get.case.travel(data.raw),
+    ltc    = get.case.ltc(data.raw),
+    age    = get.case.age(data.raw)
   ))
 }
-# combining regions
+# combining regions - TODO: better way?
 region.map = list(
   Toronto = 'Toronto',
   Durham  = 'Durham',

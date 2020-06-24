@@ -1,8 +1,8 @@
 Re-main:
 	Rscript Re/main.r
 
-debug:
-	Rscript .debug/params.r
+iphis-min:
+	Rscript Re/data/iphis-min.r
 
 deconv-deconv:
 	Rscript deconv/deconv.r
