@@ -5,7 +5,7 @@ source('utils.r')
 source.iter(root='Re','re.r','plot.r','incid.r')
 source.env(root='Re/data',iphis='iphis.r')
 
-config.save = TRUE
+# config.save = TRUE
 
 refs = list(
   'S(t) [NP] Du 2020'       = list(param='ser-int', which='master'),

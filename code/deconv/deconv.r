@@ -13,7 +13,7 @@ library('latex2exp')
 source('config.r')
 source('utils.r')
 
-config.save = TRUE
+# config.save = TRUE
 
 # define the time vector & distributions
 dt = 0.1
