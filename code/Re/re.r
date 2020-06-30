@@ -9,6 +9,7 @@ get.config = function(
   t.end       = as.date('2020-06-20'), # last R at t.end - t.sensor; last case at t.end - t.censor
   gen.time    = NULL,        # generation time parameterization (default is master)
   region      = 'GTA',       # 'GTA'
+  # TODO: add neighbourhoods as config variable and handle downstream
   data.source = 'iphis',     # 'iphis' only for now
   case.date   = 'episode',   # 'episode', 'report'
   case.def    = 'report',    # what is a case: 'report', 'death'
