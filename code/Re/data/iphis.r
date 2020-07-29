@@ -13,6 +13,9 @@ get.case.region = function(data.raw){
   }
   return(unlist(lapply(data.raw$DIAGNOSING_HEALTH_UNIT_AREA,map.fun)))
 }
+get.case.neighbourhood = function(data.raw){
+  return(data.raw$NHname)
+}
 get.case.date = function(config,data.raw){
   fmt = '%d%b%Y:%H:%M:%S'
   if (config$case.date == 'episode'){
@@ -40,12 +43,13 @@ load.case.data = function(config){
   fname = file.path(path.data,'private','IPHIS_REPORT_MIN.csv')
   data.raw = load.data(fname)
   return(data.frame(
-    region = get.case.region(data.raw),
-    dates  = get.case.date(config,data.raw),
-    death  = get.case.death(data.raw),
-    travel = get.case.travel(data.raw),
-    ltc    = get.case.ltc(data.raw),
-    age    = get.case.age(data.raw)
+    region        = get.case.region(data.raw),
+    neighbourhood = get.case.neighbourhood(data.raw),
+    dates         = get.case.date(config,data.raw),
+    death         = get.case.death(data.raw),
+    travel        = get.case.travel(data.raw),
+    ltc           = get.case.ltc(data.raw),
+    age           = get.case.age(data.raw)
   ))
 }
 # combining regions - TODO: better way?
