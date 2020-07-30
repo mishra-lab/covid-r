@@ -39,7 +39,10 @@ get.case.weights = function(config,data){
 }
 get.case.select = function(config,data,context){
   select = as.logical(rep(1,nrow(data)))
+  # filter cases based on region
   select = select & (data$region %in% region.map[[config$region]])
+  # filter cases based on neighbourhood
+  select = select & (data$neighbourhood %in% neighbourhood.map[[config$neighbourhood]])
   if (config$case.def == 'death'){
     select = select & data$death
   }

@@ -3,24 +3,24 @@ library('EpiEstim')
 library('questionr')
 # the main config options that get passed around
 get.config = function(
-  t.tau       = 3,           # Re sliding window (days); larger = more smooth but more delay
-  t.censor    = 3,           # assumed reporting delay (days); remove last X days
-  t.start     = as.date('2020-02-25'), # first R at t.start + t.tau + 1; first case at t.start
-  t.end       = as.date('2020-06-20'), # last R at t.end - t.sensor; last case at t.end - t.censor
-  gen.time    = NULL,        # generation time parameterization (default is master)
-  region      = 'GTA',       # 'GTA'
-  # TODO: add neighbourhoods as config variable and handle downstream
-  data.source = 'iphis',     # 'iphis' only for now
-  case.date   = 'episode',   # 'episode', 'report'
-  case.def    = 'report',    # what is a case: 'report', 'death'
-  case.travel = 'local',     # how to treat travel cases: 'local', 'imported', 'exclude'
-  case.ltc    = 'local',     # how to treat LTC cases:    'local', 'imported', 'exclude'
-  case.main   = 'local',     # hot to treat other cases:  'local', 'imported', 'exclude'
-  case.adj    = FALSE,       # infer cases by deaths based on IFR: FALSE, 'overall', 'age'
-  import.frac = 1,           # what proportion of imported cases can actually infect locally
-  unkn.import.frac = 0,      # attribute a proportion of local cases to import without flag
-  case.smooth = 1,           # SD of smoothing kernel for incidence (days)
-  case.sample = FALSE        # number of repeated Re(t) estimations if randomly sampling anything
+  t.tau            = 3,                     # Re sliding window (days); larger = more smooth but more delay
+  t.censor         = 3,                     # assumed reporting delay (days); remove last X days
+  t.start          = as.date('2020-02-25'), # first R at t.start + t.tau + 1; first case at t.start
+  t.end            = as.date('2020-06-20'), # last R at t.end - t.sensor; last case at t.end - t.censor
+  gen.time         = NULL,                  # generation time parameterization (default is master)
+  region           = 'GTA',                 # 'GTA'
+  neighbourhood    = 'ALL',                 # neighbourhood name, e.g.: 'Harbourfront-CityPlace'
+  data.source      = 'iphis',               # 'iphis' only for now
+  case.date        = 'episode',             # 'episode', 'report'
+  case.def         = 'report',              # what is a case: 'report', 'death'
+  case.travel      = 'local',               # how to treat travel cases: 'local', 'imported', 'exclude'
+  case.ltc         = 'local',               # how to treat LTC cases:    'local', 'imported', 'exclude'
+  case.main        = 'local',               # hot to treat other cases:  'local', 'imported', 'exclude'
+  case.adj         = FALSE,                 # infer cases by deaths based on IFR: FALSE, 'overall', 'age'
+  import.frac      = 1,                     # what proportion of imported cases can actually infect locally
+  unkn.import.frac = 0,                     # attribute a proportion of local cases to import without flag
+  case.smooth      = 1,                     # SD of smoothing kernel for incidence (days)
+  case.sample      = FALSE                  # number of repeated Re(t) estimations if randomly sampling anything
 ){
   config = as.list(environment())
   if (is.null(gen.time)){ config$gen.time = list(param='gen-time',which='master') }

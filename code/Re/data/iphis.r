@@ -61,3 +61,11 @@ region.map = list(
   York    = 'York',
   GTA     = c('Toronto','Durham','Halton','Peel','York')
 )
+
+neighbourhood.map = list()
+fname = file.path(path.data, 'private', 'DAs16_NHs396_v12a_04June2020_FINAL_TORONTO.xlsx')
+DAUID = data.frame(read_excel(fname, sheet='CityToronto_DAUID'))
+NHnames = unique(DAUID$NHname)
+neighbourhood.map = as.list(NHnames)
+names(neighbourhood.map) = NHnames
+neighbourhood.map[['ALL']] = c(NHnames, NA)
