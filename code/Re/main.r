@@ -10,7 +10,9 @@ config.save = TRUE
 
 R.obj = estimate.R()
 plot.R(list(main=R.obj))
+save.fig('iphis-R-main')
 plot.cases(list(main=R.obj))
+save.fig('iphis-cases')
 
 plot.R(vs='Travel',list(
   Include = estimate.R(case.travel='local'),
@@ -18,7 +20,7 @@ plot.R(vs='Travel',list(
 ))
 save.fig('iphis-R-by-reported-compare-travel')
 
-plot.R(vs='LTC Cases',list(
+plot.R(vs='LTC Cases',ylim=c(0,3),list(
   Include = estimate.R(case.ltc='local'),
   Exclude = estimate.R(case.ltc='exclude')
 ))

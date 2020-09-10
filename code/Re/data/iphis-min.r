@@ -6,7 +6,7 @@ source.iter(root='Re','re.r','plot.r','incid.r')
 cols = c(
   'ACCURATE_EPISODE_DATE',
   'CASE_REPORTED_DATE',
-  'CASE_ACQUISITIONINFO',
+  'LIKELY_ACQUISITION',
   'CLIENT_DEATH_DATE',
   'DIAGNOSING_HEALTH_UNIT_AREA',
   'LTCH_RESIDENT',

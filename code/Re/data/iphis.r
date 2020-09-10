@@ -26,10 +26,10 @@ get.case.death = function(data.raw){
   return(data.raw$CLIENT_DEATH_DATE != '')
 }
 get.case.travel = function(data.raw){
-  return(data.raw$CASE_ACQUISITIONINFO == 'Travel-Related')
+  return(data.raw$LIKELY_ACQUISITION == 'Travel')
 }
 get.case.ltc = function(data.raw){
-  return(data.raw$LTCH_RESIDENT == 'Yes' | data.raw$LTCH_HCW == 'Yes')
+  return(data.raw$LTCH_RESIDENT == 'Yes') # | data.raw$LTCH_HCW == 'Yes')
 }
 get.case.age = function(data.raw){
   return(data.raw$age_grp)
