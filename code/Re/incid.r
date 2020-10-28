@@ -48,7 +48,7 @@ get.case.select = function(config,data,context){
 get.cases = function(config,dates,data,src){
   select = get.case.select(config,data,src)
   adjust = rep(1,length(dates))
-  for (what in c('travel','ltc')){
+  for (what in c('travel','ltcr','ltcw')){
     if (src == what){
       select = select &  data[[what]] # include matches
     } else {
@@ -67,20 +67,26 @@ get.incid = function(config,dates){
   cases = list(
     travel = get.cases(config,dates,data,'travel'),
     main   = get.cases(config,dates,data,'main'),
-    ltc    = get.cases(config,dates,data,'ltc')
+    ltcr   = get.cases(config,dates,data,'ltcr'),
+    ltcw   = get.cases(config,dates,data,'ltcw')
   )
   combine.cases = function(context){
     return(smooth.incid(config,
       (config$case.travel == context) * cases$travel +
       (config$case.main   == context) * cases$main +
-      (config$case.ltc    == context) * cases$ltc
+      (config$case.ltcr   == context) * cases$ltcr +
+      (config$case.ltcw   == context) * cases$ltcw
     ))
   }
   local    = combine.cases('local')
   imported = combine.cases('imported')
   return(data.frame(
-    local    = local * (1-config$unkn.import.frac),
-    imported = local * (  config$unkn.import.frac) + imported * config$import.frac,
+    local    = local * (1-config$local.import.frac) + imported * (  config$import.local.frac),
+    imported = local * (  config$local.import.frac) + imported * (1-config$import.local.frac),
     dates    = dates
   ))
 }
+
+
+
+

@@ -14,4 +14,5 @@ cols = c(
   'age_grp'
 )
 X = load.data(file.path(path.data,'private','IPHIS_REPORT.csv'))
+save.data(names(X), file.path(path.data,'private','IPHIS_REPORT_HEAD.csv'))
 save.data(X[,cols], file.path(path.data,'private','IPHIS_REPORT_MIN.csv'))

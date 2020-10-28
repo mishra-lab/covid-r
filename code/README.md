@@ -1,7 +1,7 @@
 # Estimating Re(t) of COVID-19 in Ontario / GTA
 
 - Authors: Jesse Knight
-- Last Update: 2020-06-24
+- Last Update: 2020-10-28
 
 ## Code Overview
 - `./` - config code
@@ -11,7 +11,8 @@
 ## Usage
 1. Download the file `IPHIS_REPORT.csv` into `data/private/`
 2. Run `make iphis-min` to produce the file `IPHIS_REPORT_MIN.csv`
-   which is a subset of columns from the original for faster loading.
+   which is a subset of columns from the original for faster loading,
+   and `IPHIS_REPORT_HEAD.csv` which is all the column names only.
    Remember to re-run it after updating `IPHIS_REPORT.csv`.
 3. Run `make Re-main` to plot some comparisons of Re(t)
    based on options in the `config` object (details below).
@@ -32,10 +33,11 @@
    - `dates`: list of dates
    - `local`: cases assumed to be generated locally, and go on to generate more local cases
    - `imported` cases assumed to be generated elsewhere, but go on to generate local cases
-   The values of `case.{travel,ltc,main}` define how these cases are treated.
+   The values of `case.{travel,ltcr,ltcw,main}` define how these cases are treated,
+   representing travel-related, long-term care residents, long-term care workers, and all other.
    Cases may also filtered using `get.case.select` e.g. for sub-regions,
    or weighted using `get.case.weights` e.g. for inferring cases based on deaths.
-   Note: IFR weights are broken right now, please do not use this method.
+   NOTE: IFR weights are broken right now, please do not use this method.
 4. `load.case.data` is called by `get.incid` and is expected to return
    a data.frame with the required columns.
    Theoretically multiple data sources could each define a function `load.case.data`,
@@ -59,5 +61,4 @@
 - You can ignore the (or suppress) warnings about colour from the `plot` functions.
 - Please use the default `config` options for: `case.adj` and `case.sample`
   as the implementation of these features needs review.
-- Neighbourhood stratification should probably be treated like (but separate from) `regions`.
 - Impact of outbreaks could probably be treated like `travel` / `ltc`

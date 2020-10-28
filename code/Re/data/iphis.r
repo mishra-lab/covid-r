@@ -28,8 +28,11 @@ get.case.death = function(data.raw){
 get.case.travel = function(data.raw){
   return(data.raw$LIKELY_ACQUISITION == 'Travel')
 }
-get.case.ltc = function(data.raw){
-  return(data.raw$LTCH_RESIDENT == 'Yes') # | data.raw$LTCH_HCW == 'Yes')
+get.case.ltcr = function(data.raw){
+  return(data.raw$LTCH_RESIDENT == 'Yes')
+}
+get.case.ltcw = function(data.raw){
+  return(data.raw$LTCH_HCW == 'Yes')
 }
 get.case.age = function(data.raw){
   return(data.raw$age_grp)
@@ -43,7 +46,8 @@ load.case.data = function(config){
     dates  = get.case.date(config,data.raw),
     death  = get.case.death(data.raw),
     travel = get.case.travel(data.raw),
-    ltc    = get.case.ltc(data.raw),
+    ltcr   = get.case.ltcr(data.raw),
+    ltcw   = get.case.ltcw(data.raw),
     age    = get.case.age(data.raw)
   ))
 }

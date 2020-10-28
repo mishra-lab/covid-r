@@ -6,18 +6,19 @@ get.config = function(
   t.tau       = 3,           # Re sliding window (days); larger = more smooth but more delay
   t.censor    = 3,           # assumed reporting delay (days); remove last X days
   t.start     = as.date('2020-02-25'), # first R at t.start + t.tau + 1; first case at t.start
-  t.end       = as.date('2020-09-06'), # last R at t.end - t.sensor; last case at t.end - t.censor
+  t.end       = as.date('2020-09-29'), # last R at t.end - t.sensor; last case at t.end - t.censor
   gen.time    = NULL,        # generation time parameterization (default is master)
   region      = 'GTA',       # 'GTA'
   data.source = 'iphis',     # 'iphis' only for now
   case.date   = 'episode',   # 'episode', 'report'
   case.def    = 'report',    # what is a case: 'report', 'death'
   case.travel = 'imported',  # how to treat travel cases: 'local', 'imported', 'exclude'
-  case.ltc    = 'local',     # how to treat LTC cases:    'local', 'imported', 'exclude'
+  case.ltcr   = 'local',     # how to treat LTCR cases:   'local', 'imported', 'exclude'
+  case.ltcw   = 'local',     # how to treat LTCW cases:   'local', 'imported', 'exclude'
   case.main   = 'local',     # hot to treat other cases:  'local', 'imported', 'exclude'
   case.adj    = FALSE,       # infer cases by deaths based on IFR: FALSE, 'overall', 'age'
-  import.frac = 1,           # what proportion of imported cases can actually infect locally
-  unkn.import.frac = 0,      # attribute a proportion of local cases to import without flag
+  import.local.frac = 0,     # attribute a proportion of imported cases to actually local origin
+  local.import.frac = 0,     # attribute a proportion of local cases to actually imported
   case.smooth = 1,           # SD of smoothing kernel for incidence (days)
   case.sample = FALSE        # number of repeated Re(t) estimations if randomly sampling anything
 ){
@@ -78,7 +79,7 @@ merge.R = function(R.objs){
   R$R[['Quantile.0.75(R)']]  = qgamma(.750, shape=shape, scale=scale)
   R$R[['Quantile.0.95(R)']]  = qgamma(.950, shape=shape, scale=scale)
   R$R[['Quantile.0.975(R)']] = qgamma(.975, shape=shape, scale=scale)
-  # WARNING: this may not actually represent uncertainty accurately
+  # WARNING: this probably does not actually represent uncertainty accurately
   #          since we re-estimate a different gamma distribution
   #          but the true uncertainty distribution likely has fatter tails.
   return(R)
