@@ -16,7 +16,7 @@ source('utils.r')
 config.save = TRUE
 
 # define the time vector & distributions
-dt = 0.1
+dt = 0.01
 t = seq(-40,40,dt)
 S = d(covid.19.distr('ser-int'))(t)
 H = d(covid.19.distr('inc-per'))(t)
@@ -36,7 +36,7 @@ S.fun = function(G){
 jfun = function(par){
   S.hat = S.fun(G.fun(par))
   if (any(is.na(S.hat))) { return(1e9) }
-  J = sum(S.hat * (log(S.hat) - log(S))) # KL Divergence
+  J = sum(S * (log(S) - log(S.hat))) # KL Divergence
   # J = sum((S.hat - S)^2) # SSE(S.hat-S)
   return(J)
 }

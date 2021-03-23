@@ -1,0 +1,13 @@
+In a previous version of this work,
+the parameters $\theta = [\alpha, \beta]$ were calculated incorrectly
+because the Kullback-Leibler divergence was defined in the wrong direction.
+The impact on generation time statistics is as follows (original $\rightarrow$ fixed):
+shape ($\alpha$): $1.813 \rightarrow 1.633$,
+scale ($\beta$): $2.199 \rightarrow 2.498$,
+mean: $3.99 \rightarrow 4.08$,
+\sd: $2.96 \rightarrow 3.19$.
+The qualitative interpretation of results is unchanged,
+and the corrected numerical results are given in this version.
+We sincerely apologize for this error.\\
+The error correction is shown here:
+\scriptsize\hreftt{https://github.com/mishra-lab/covid-r/commit/aaef512}
