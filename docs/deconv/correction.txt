@@ -1,0 +1,3 @@
+In a previous version of this work, the parameters θ = [α, β] were calculated incorrectly because the Kullback-Leibler divergence was defined in the wrong direction. The impact on generation time parameters and statistics is as follows (original → fixed): shape (α): 1.813 → 1.633, scale (β): 2.199 → 2.498, mean: 3.99 → 4.08, SD: 2.96 → 3.19. The qualitative interpretation of results is unchanged, and the corrected numerical results are given in this version. We sincerely apologize for this error.
+
+The error correction is shown here: https://github.com/mishra-lab/covid-r/commit/aaef512

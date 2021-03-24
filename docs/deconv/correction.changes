@@ -1,0 +1,29 @@
+Abstract:
+  - "Gamma-distributed with mean 3.99 and standard deviation 2.96 days." ->
+    "Gamma-distributed with mean 4.08 and standard deviation 3.19 days."
+
+Results:
+  - "shape α = 1.813 and scale β = 2.199" ->
+    "shape α = 1.633 and scale β = 2.498"
+  - "The mean generation time of 3.99 was similar to" ->
+    "The mean generation time of 4.08 was similar to"
+  - "The SD of the generation time distribution was smaller at 2.96" ->
+    "The SD of the generation time distribution was smaller at 3.19"
+  - "2.33 vs 1.85 on March 16; and 1.32 vs 1.24 on April 13" ->
+    "2.33 vs 1.86 on March 16; and 1.32 vs 1.24 on April 13"
+
+Discussion:
+  - "Gamma-distributed with mean 3.99 and SD 2.96" ->
+    "Gamma-distributed with mean 4.08 and SD 3.19"
+
+Figures:
+  - Please replace the current versions with the corrected versions attached here:
+    - Figure 2
+    - Figure 3
+    - Figure A.1
+    - Figure A.2
+
+Appendix:
+  - Table A.1
+    - "G(τ) | this | - | Gam(α=1.813, β=2.199) | 3.99 | 2.96" ->
+      "G(τ) | this | - | Gam(α=1.633, β=2.498) | 4.08 | 3.19"
