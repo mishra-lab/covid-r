@@ -43,17 +43,21 @@ for (name in names(refs)){
   save.csv(paste('R',name),R.df)
 }
 # plot R
-plot.R(R.objs,vs='Source',ylim=c(0,3.5),xlim=c('2020-03-09','2020-05-04')) +
-  theme(legend.text.align=0,legend.position=c(.99,.99),legend.justification=c(1,1))
-save.fig('.tmp/deconv/Re',width=5,height=4)
+plot.cases(R.objs[['G(t) [this]']],what='all',xlim=c('2020-03-09','2020-05-04'))
+save.fig('.tmp/deconv/cases',width=5,height=3)
+plot.R(R.objs,vs='Source',ylim=c(0,2),xlim=c('2020-03-09','2020-05-04')) +
+  theme(legend.text.align=0,legend.position=c(.999,.001),legend.justification=c(1,0)) +
+  guides(color=guide_legend(ncol=2))
+save.fig('.tmp/deconv/Re',width=5,height=3)
 plot.R(R.objs,vs='Source',ylim=c(0.5,1.5),xlim=c('2020-03-30','2020-05-04')) +
-  theme(legend.text.align=0,legend.position=c(.01,.01),legend.justification=c(0,0))
-save.fig('.tmp/deconv/Re-zoom',width=5,height=4)
+  theme(legend.text.align=0,legend.position=c(.001,.001),legend.justification=c(0,0)) +
+  guides(color=guide_legend(ncol=2))
+save.fig('.tmp/deconv/Re-zoom',width=5,height=3)
 # plot distr
 D = melt(distr,id.vars='t',variable.name='Source',value.name='Probability')
 ggplot(data=D, aes(x=t,y=Probability,color=Source)) +
   geom_line() +
-  lims(x=c(-10,20)) +
+  lims(x=c(-10,20),y=c(0,.22)) +
   labs(x='Time (days)') +
   theme_light() +
   theme(legend.text.align=0,legend.position=c(.99,.99),legend.justification=c(1,1))

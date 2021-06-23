@@ -96,7 +96,7 @@ mle.plot = function(G){
     geom_line() +
     scale_color_manual(values=colors,labels=labs) +
     scale_linetype_manual(values=lines,labels=labs) +
-    lims(x=c(-15,30)) +
+    lims(x=c(-10,20),y=c(0,.22)) +
     labs(x='Time (days)') +
     theme_light() +
     theme(legend.text.align=0,legend.position=c(.99,.99),legend.justification=c(1,1))
