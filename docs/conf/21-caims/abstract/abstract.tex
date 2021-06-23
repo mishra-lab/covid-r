@@ -1,0 +1,28 @@
+\par\textbf{Background:}
+The effective reproduction number $R_e(t)$ is the average number of new infections directly generated from each existing infection under the conditions at time $t$.
+$R_e(t)$ can be calculated from the number of daily infections
+and the time between subsequent infections---the infection-infection distribution, $G(t)$.
+The infection-infection distribution $G(t)$ is often approximated by the symptom-symptom distribution $S(t)$,
+because the time of infection can be difficult to determine.
+However, if the time between infection and symptom onset---the infection-symptom distribution $H(t)$---varies substantially,
+then the infectee can develop symptoms before the infector and $S(t)$ can be negative, such as in the case of \covid.
+In this case, it may be improper to approximate $G(t)$ with $S(t)$.
+\par\textbf{Methods:}
+Given parametric equations for the symptom-symptom distribution $S(t)$ and the infection-symptom distribution $H(t)$,
+we develop a method to recover the infection-infection distribution $G(t)$ using approximate deconvolution.
+We then compare estimates of $R_e(t)$ for the Greater Toronto Area using $G(t)$ to those using $S(t)$;
+two definitions of $S(t)$ are considered, which do and do not allow negative values, respectively.
+\par\textbf{Results:}
+We estimated the time between \covid infections $G(t)$ to be Gamma-distributed with mean 4.08 and standard deviation 3.19 days.
+The negative-permitting distribution $S(t)$ had equal mean but larger variance than $G(t)$, resulting in underestimation of $R_e(t)$ relative to $G(t)$,
+whereas the non-negative $S(t)$ had similar variance but larger mean, resulting in overestimation of $R_e(t)$.
+\par\textbf{Discussion:}
+Approximation of the infection-infection distribution $G(t) $with the symptom-symptom distribution $S(t)$
+may result in biased estimates of the effective reproduction number $R(t)$.
+The infection-infection distribution $G(t)$ can also be understood as the distribution of infectiousness;
+thus accurately distinguishing $G(t)$ from $S(t)$ may also have implications for isolation interventions.
+Future work should explore possible correlation between $S(t)$, $H(t)$, and $G(t)$ and
+estimation of confidence intervals for distribution parameters.
+\par\textbf{Open Science:}
+The daily GTA case data used are not public.
+All other analysis code and data are available at:\\\hreftt{https://github.com/mishra-lab/covid-r}

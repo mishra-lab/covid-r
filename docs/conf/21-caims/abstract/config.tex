@@ -1,0 +1,11 @@
+\usepackage[libertine]{newtxmath}
+\usepackage[osf]{ETbb}
+\usepackage[colorlinks]{hyperref}
+\usepackage{authblk,xspace}
+\usepackage[margin=3cm,top=2cm]{geometry}
+\setlength{\parskip}{1ex}
+\setlength{\parindent}{0pt}
+\newcommand{\hreftt}[1]{\href{#1}{{\footnotesize\texttt{#1}}}\xspace}
+\def\covid{\textsc{covid-19}\xspace}
+\def\dowc{\immediate\write18{detex abstract.tex | wc -w > wordcount.tex}}
+\def\printwc{\input{wordcount.tex}}
