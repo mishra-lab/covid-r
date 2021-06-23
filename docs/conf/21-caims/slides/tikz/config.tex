@@ -1,0 +1,109 @@
+% tikz
+\usepackage{tikz,ifthen}
+\usetikzlibrary{
+  calc,
+  external,
+  arrows.meta,
+  decorations.pathreplacing,
+}
+\newlength{\dx}\setlength{\dx}{1cm}
+\tikzset{
+  circ/.style = {
+    circle,
+    minimum width = 0.2\dx,
+    draw = #1,
+    fill = #1!50!white,
+  },
+  circ/.default = C3,
+  dot/.style = {
+    circle,
+    inner sep = 0.02\dx,
+    fill = #1,
+    draw = #1,
+  },
+  dot/.default = C3,
+  brace/.style = {
+    decorate,
+    decoration = {brace,mirror,amplitude=0.15\dx},
+  },
+  arrow/.style = {
+    > = LaTeX,
+  },
+  event/.style = {
+    circle,
+    minimum width = 1\dx,
+    inner sep = 0\dx,
+    draw = #1,
+    fill = #1!10!white,
+  },
+  plot/.style 2 args = {
+    samples = 100, % TODO
+    draw = #1,
+    fill = #1!10!white,
+    variable = #2,
+  },
+  stage/.style = {
+    draw = #1,
+    fill = #1!10!white,
+    rounded corners = 0.1\dx,
+    minimum width = 2.5\dx,
+    minimum height = 0.7\dx,
+  },
+}
+% outbreak R
+\newcommand{\outbreak}[5]{
+  \ifthenelse{\isundefined{\gmax}}{
+    \def\gmax{#1}}{}
+  \ifthenelse{\equal{#1}{0}}{}{%
+    \foreach \i in {1,...,#2}{
+      % math
+      \pgfmathtruncatemacro{\gen}{#1-1}
+      \pgfmathsetmacro{\dyi}{0.5*pow(#2,\gen)}
+      \pgfmathsetmacro{\ox}{#4}
+      \pgfmathsetmacro{\oy}{#5}
+      \pgfmathsetmacro{\ix}{#4 + 1}
+      \pgfmathsetmacro{\iy}{#5 + #2/2*\dyi + 1/2*\dyi - \i*\dyi}
+      % drawing
+      \draw (\ox,\oy) -- ($(\ix,\iy)$);
+      \ifthenelse{\i > #3}{
+        \outbreak{\gen}{#2}{#3}{\ix}{\iy}
+        \node[circ=C3] at ($(\ix,\iy)$){};
+      }{
+        \node[circ=gray] at ($(\ix,\iy)$){};
+      }
+    }
+  }
+  \ifthenelse{\equal{\gmax}{#1}}{
+    \node[circ=C3] at (#4,#5){};
+  }{}
+}
+% plot
+\def\x{}
+\def\y{}
+\def\t{}
+\def\xmin{0}
+\def\ymin{0}
+\def\xmax{5}
+\def\ymax{5}
+\newcommand{\plot}[6]{%
+  \draw[plot={#1}{#2},domain={#3},draw=none,#6] plot ({#4},{#5}) -- (\xmax,\ymin) -- (\xmin,\ymin) -- cycle;
+  \draw[plot={#1}{#2},domain={#3},fill=none,#6] plot ({#4},{#5});
+}
+% small labels
+\newcommand{\ulab}[1]{\footnotesize{#1}}
+% exponential growth
+\newcommand{\ky}{.2}
+\newcommand{\kt}{.6}
+\newcommand{\texp}[2]{\ky*exp(#1*#2)}
+% gaussians
+\newcommand{\gauss}[3]{1/(#2*sqrt(2*pi))*exp(-0.5*((#3-#1)/#2)^2)}
+%\newcommand{\erf}[3]{1/(1+exp(-0.07056*((#3-#1)/#2)^3 - 1.5976*(#3-#1)/#2))} % approx
+%\newcommand{\erf}[3]{.5*(1+erf((#3-#1)/(#2*sqrt(2)))}
+%\newcommand{\erf}[3]{.5*(1+tanh(sqrt(2)*(#3-#1)/(#2*sqrt(pi)))}
+\newcommand{\erf}[3]{0.5*(1 + (
+  sqrt(2/pi)*((#3-#1)/#2) / sqrt(1 + (sqrt(2/pi)*((#3-#1)/#2))^2 )
+))}
+% colors
+\definecolor{fr}{HTML}{cccccc}
+\definecolor{to}{HTML}{0033ff}
+\definecolor{sy}{HTML}{ff0000}

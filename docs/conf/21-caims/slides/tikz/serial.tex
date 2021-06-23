@@ -1,0 +1,9 @@
+\begin{tikzpicture}
+  \plot{C3}{\t}{0:5}{\t}{3*\gauss{2.3}{0.8}{\t}}{}
+  \foreach \t in {0,0.25,...,5}{
+    \pgfmathsetmacro{\y}{max(0,random() - 0.5 + 3*\gauss{2.3}{0.8}{\t})}
+    \draw[draw=C2,fill=none] (\t,0) -- ++(0.25,0) -- ++(0,\y) -- ++(-0.25,0) -- cycle;
+  }
+  \draw[thick,arrow,->] (0,0) -- node[anchor=north]{Serial Interval}       (5.5,0);
+  \draw[thick,arrow,->] (0,0) -- node[anchor=south,rotate=90]{Probability} (0,3);
+\end{tikzpicture}

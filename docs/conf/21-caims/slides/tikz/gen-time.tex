@@ -1,0 +1,45 @@
+\only<2>{Serial Interval}
+\only<3>{Generation Time}
+\only<4>{Incubation Period $i$}
+\only<5>{Incubation Period $i+1$}
+\only<6>{\vphantom{I}}
+\par
+\scalebox{0.85}{
+\begin{tikzpicture}
+%  \node at (1,5.3){\smash{
+%    \only<2>{Serial Interval}%
+%    \only<3>{Generation Time}%
+%    \only<4>{Incubation Period $i$}%
+%    \only<5>{Incubation Period $i+1$}%
+%    \only<6>{``undo'' incubation blur to recover $G(t)$ from $S(t)$}%
+%  }};
+  % nodes
+  \visible<3,4,6>{\node (f1) [event=fr]       at ( 0\dx, 4\dx) {$f_i$};}
+  \visible<3,5,6>{\node (f2) [event=to]       at ( 2\dx, 3\dx) {$f_{i+1}$};}
+  \visible<2,4,6>{\node (y1) [event=fr!50!sy] at ( 0\dx, 2\dx) {$y_i$};}
+  \visible<2,5,6>{\node (y2) [event=to!50!sy] at ( 2\dx, 1\dx) {$y_{i+1}$};}
+  % arrows
+  \visible<3,6>{\draw[arrow,->]        (f1) -- (f2);}
+  \visible<2,6>{\draw[arrow,->,dashed] (y1) -- (y2);}
+  \visible<4,6>{\draw[arrow,->]        (f1) -- (y1);}
+  \visible<5,6>{\draw[arrow,->]        (f2) -- (y2);}
+  \visible<  6>{\draw[arrow,->,dotted] (f2) -- ++( 2\dx,-1\dx);}
+  \visible<  6>{\draw[arrow,<-,dotted] (f1) -- ++(-2\dx, 1\dx);}
+  % distributions
+  \visible<2->{
+    \node(t0) at (5\dx, 5.3\dx) {\rlap{$t$}};
+    \node(t1) at (5\dx,-0.5\dx) {};
+  }
+  \visible<3,6>{\plot{to}            {\t}{0:5}{{5\dx+0.5\dx*\gauss{3}{.23}{\t}}}{\t}{}}
+  \visible<4,6>{\plot{fr!50!sy}      {\t}{0:5}{{5\dx+0.5\dx*\gauss{2}{.28}{\t}}}{\t}{}}
+  \visible<2,6>{\plot{fr!50!to!50!sy}{\t}{0:5}{{5\dx+0.5\dx*\gauss{1}{.36}{\t}}}{\t}{}}
+  \visible<5  >{\plot{to!50!sy}      {\t}{0:5}{{5\dx+0.5\dx*\gauss{1}{.23}{\t}}}{\t}{}}
+  \visible<2->{\draw[thick,arrow,->] (t0) -- (t1);}
+  \visible<2    >{\draw[thick] (4.8\dx,2\dx) -- (5.2\dx,2\dx) node{\rlap{$y_i$}};}
+  \visible<3,4,6>{\draw[thick] (4.8\dx,4\dx) -- (5.2\dx,4\dx) node{\rlap{$f_i$}};}
+  \visible<5    >{\draw[thick] (4.8\dx,3\dx) -- (5.2\dx,3\dx) node{\rlap{$f_{i+1}$}};}
+  % braces
+  \visible<3,6>{\draw[brace] (-2\dx, 4.2\dx) -- node[anchor=east,xshift=-0.1\dx]{\llap{\ulab{infections}}}    (-2\dx, 2.8\dx);}
+  \visible<2,6>{\draw[brace] (-2\dx, 2.2\dx) -- node[anchor=east,xshift=-0.1\dx]{\llap{\ulab{symptom onset}}} (-2\dx, 0.8\dx);}
+\end{tikzpicture}
+}

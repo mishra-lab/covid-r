@@ -1,0 +1,53 @@
+\usetheme{Malmoe}
+% fonts
+\usepackage[osf]{AlegreyaSans}
+\usepackage{newpxmath}
+% colors
+\definecolor{C1}{RGB}{  6, 41, 88}
+\definecolor{C2}{RGB}{133,168,215}
+\definecolor{C3}{RGB}{187, 19, 62}
+\setbeamercolor{title}     {fg=C1}
+\setbeamercolor{frametitle}{fg=C1}
+\setbeamercolor{structure} {fg=C1}
+% misc
+\setbeamersize{text margin left=2em,text margin right=2em}
+\setbeamertemplate{frametitle continuation}{}
+\newcommand{\clr}[1]{{\color{C3}{#1}}}
+% sections
+\usepackage{xspace,tabto}
+\setlength{\parskip}{1em}
+\def\hfilll{\hskip 0pt plus 999fill}
+\newcommand{\ttl}[1]{\tabto{#1\linewidth}}
+\newcommand{\covid}{{\textsc{covid}-19}\xspace}
+\newcommand{\heading}[1]{{\color{C1}\textbf{#1}}}
+\newcommand{\si}[1]{\textsuperscript{~#1}}
+\newcommand{\sx}[2][]{\textsuperscript{#1~}#2}
+\newcommand{\conv}{\mathop{*}}
+\newcommand{\iconv}{\mathop{*^{-1}}}
+% footer
+\expandafter\def\expandafter\insertshorttitle\expandafter{%
+  \insertshorttitle\hfilll\insertframenumber\,/\,\inserttotalframenumber}
+\let\oldshortauthor=\insertshortauthor
+\renewcommand{\insertshortauthor}{\textcolor{gray}{\texttt{\url}\hfilll\oldshortauthor}}
+% itemize
+\setbeamercolor{itemize item}   {fg=C1}
+\setbeamercolor{itemize subitem}{fg=C2}
+\settowidth{\leftmargini}{\usebeamertemplate{itemize item}}
+\addtolength{\leftmargini}{\labelsep}
+% floats
+\usepackage{booktabs,tabularx,graphicx}
+\graphicspath{{fig/}{fig/logo/}}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+% refs
+\usepackage[
+  backend=biber,
+  style=authoryear,
+  isbn=false,
+  url=false,
+  doi=false,
+  eprint=false,
+  maxcitenames=1,
+]{biblatex}
+\addbibresource{refs.bib}
+\renewcommand*{\bibfont}{\scriptsize}
+\setbeamertemplate{bibliography item}{}

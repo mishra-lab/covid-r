@@ -1,0 +1,14 @@
+\begin{tikzpicture}
+  \pgfmathsetseed{123}
+  \plot{C3}{\t}{0:5}{\t}{\texp{\kt}{\t}}{};
+  \draw[thick,arrow,->] (0,0) -- node[anchor=north]{Time}                 (5.5,0);
+  \draw[thick,arrow,->] (0,0) -- node[anchor=south,rotate=90]{Infections} (0,5);
+  \foreach \t in {0,0.2,...,5}{
+    \pgfmathsetmacro{\y}{max(0, random() - 0.5 + \texp{\kt}{\t})}
+    \node[dot=C3] at (\t,\y){};
+  }
+  \pgfmathsetmacro{\yo}{\texp{\kt}{2.5}}
+  \pgfmathsetmacro{\yf}{\texp{\kt}{4.0}}
+  \draw[brace] (2.5,\yo) -- (4.0,\yo) node[midway,yshift=-0.4cm]{$g$}; % \visible<2->{
+  \draw[brace] (4.0,\yo) -- (4.0,\yf) node[midway,xshift=+0.4cm]{$R_0$}; % \visible<3->{
+\end{tikzpicture}
